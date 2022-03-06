@@ -1,21 +1,16 @@
-/**
-* Template Name: Arsha - v4.7.0
-* Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,400;0,500;0,700;1,400&family=Smooch+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-/*--------------------------------------------------------------
-# General
---------------------------------------------------------------*/
 body {
-  font-family: "Open Sans", sans-serif;
+  /* font-family: 'Smooch Sans', sans-serif, monospace; */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
   color: #444444;
 }
 
 a {
   color: #47b2e4;
   text-decoration: none;
+  font-weight: bolder;
 }
 
 a:hover {
@@ -24,7 +19,7 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Jost", sans-serif;
+  font-family: 'Smooch Sans', sans-serif, monospace;
 }
 
 /*--------------------------------------------------------------
@@ -127,7 +122,12 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
 }
 #header .logo img {
-  max-height: 40px;
+  max-height: 200px;
+}
+
+#header .customLogo{
+  height: 100px;
+  width: 100px;
 }
 
 /*--------------------------------------------------------------
@@ -155,7 +155,7 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: space-between;
   padding: 10px 0 10px 30px;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: bolder;
   color: #fff;
   white-space: nowrap;
   transition: 0.3s;
@@ -334,7 +334,7 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 #hero {
   width: 100%;
-  height: 80vh;
+  height: 100vh;
   background: #37517e;
 }
 #hero .container {
@@ -404,6 +404,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   #hero .hero-img img {
     width: 50%;
+    height: 100vh ;
   }
 }
 @media (max-width: 768px) {
@@ -772,7 +773,7 @@ section {
 # Cta
 --------------------------------------------------------------*/
 .cta {
-  background: linear-gradient(rgba(40, 58, 90, 0.9), rgba(40, 58, 90, 0.9)), url("../img/mklogo.png") fixed center center;
+  background: linear-gradient(rgba(40, 58, 90, 0.9), rgba(40, 58, 90, 0.9)), url("../img/hologram.jpeg") fixed center center;
   background-size: cover;
   padding: 120px 0;
 }
