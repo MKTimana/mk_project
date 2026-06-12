@@ -159,8 +159,8 @@ export function Portfolio() {
           <span className="section-kicker">Portfólio</span>
           <h2>Trabalhos realizados com foco em presença digital e suporte técnico.</h2>
           <p>
-            Alguns projetos entregues pela MKTECH. Por enquanto usamos imagens template dos clientes e descrições
-            resumidas para organizar a apresentação dos trabalhos.
+            Conheça alguns projetos entregues pela MKTECH, com soluções pensadas para reforçar a presença digital,
+            a comunicação e a operação dos nossos clientes.
           </p>
         </div>
 
