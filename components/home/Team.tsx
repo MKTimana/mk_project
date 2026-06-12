@@ -7,7 +7,7 @@ export function Team() {
         <div className="section-title">
           <span className="section-kicker">Equipe</span>
           <h2>Quem está por trás das soluções.</h2>
-          <p>Uma equipe jovem, dinâmica e orientada para resolver problemas com qualidade.</p>
+          <p>Uma Equipe jovem, dinâmica e orientada para resolver problemas com qualidade.</p>
         </div>
 
         <div className="row g-4">

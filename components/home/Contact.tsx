@@ -8,31 +8,48 @@ function getString(formData: FormData, key: string) {
 
 export function Contact() {
   const [feedback, setFeedback] = useState("");
+  const [error, setError] = useState("");
+  const [isSending, setIsSending] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const name = getString(formData, "name");
-    const email = getString(formData, "email");
-    const phone = getString(formData, "phone");
-    const subject = getString(formData, "subject") || "Pedido de contacto pelo website MKTECH";
-    const message = getString(formData, "message");
 
-    const body = [
-      `Nome: ${name}`,
-      `Email: ${email}`,
-      `Telefone: ${phone || "Não informado"}`,
-      "",
-      "Mensagem:",
-      message
-    ].join("\n");
+    setFeedback("");
+    setError("");
+    setIsSending(true);
 
-    const mailto = `mailto:geral@mktech.co.mz?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: getString(formData, "name"),
+          email: getString(formData, "email"),
+          phone: getString(formData, "phone"),
+          subject: getString(formData, "subject"),
+          serviceType: getString(formData, "serviceType"),
+          message: getString(formData, "message")
+        })
+      });
 
-    window.location.href = mailto;
-    setFeedback("O seu aplicativo de email foi aberto com a mensagem preenchida.");
+      const result = (await response.json().catch(() => null)) as { error?: string } | null;
+
+      if (!response.ok) {
+        throw new Error(result?.error || "Não foi possível enviar a mensagem.");
+      }
+
+      form.reset();
+      setFeedback("Mensagem enviada com sucesso. Entraremos em contacto em breve.");
+    } catch (sendError) {
+      setError(sendError instanceof Error ? sendError.message : "Não foi possível enviar a mensagem.");
+    } finally {
+      setIsSending(false);
+    }
   }
 
   return (
@@ -41,13 +58,13 @@ export function Contact() {
         <div className="section-title contact-title">
           <span className="section-kicker">Contactos</span>
           <h2>Entre em Contacto</h2>
-          <p>Tem uma ideia, uma necessidade técnica ou um projecto para lançar? Vamos conversar.</p>
+          <p>Tem uma ideia, uma necessidade técnica ou um projeto para lançar? Vamos conversar.</p>
         </div>
 
         <div className="contact-layout contact-layout-form-first">
           <div className="contact-panel contact-intro-panel">
-            <span className="contact-pill">Resposta simples e directa</span>
-            <h3>Vamos conversar sobre o seu projecto?</h3>
+            <span className="contact-pill">Resposta simples e direta</span>
+            <h3>Vamos conversar sobre o seu projeto?</h3>
             <p>
               Conte-nos o que pretende criar, corrigir ou melhorar. A MKTECH ajuda a transformar a sua necessidade numa
               solução digital clara, bonita e fácil de manter.
@@ -72,6 +89,18 @@ export function Contact() {
               <input className="form-control" type="email" name="email" placeholder="Seu e-mail" required />
               <input className="form-control" type="tel" name="phone" placeholder="Seu telefone" />
               <input className="form-control" type="text" name="subject" placeholder="Assunto" />
+              <select className="form-control" name="serviceType" defaultValue="" required>
+                <option value="" disabled>
+                  Tipo de serviço
+                </option>
+                <option value="Website">Website</option>
+                <option value="Sistema ou aplicação">Sistema ou aplicação</option>
+                <option value="Redes de computadores">Redes de computadores</option>
+                <option value="Email corporativo">Email corporativo</option>
+                <option value="Hospedagem e domínio">Hospedagem e domínio</option>
+                <option value="Assistência técnica">Assistência técnica</option>
+                <option value="Outro">Outro</option>
+              </select>
               <textarea
                 className="form-control"
                 name="message"
@@ -87,8 +116,14 @@ export function Contact() {
               </p>
             ) : null}
 
-            <button className="contact-submit" type="submit">
-              Enviar mensagem
+            {error ? (
+              <p className="contact-feedback contact-feedback-error" role="alert">
+                {error}
+              </p>
+            ) : null}
+
+            <button className="contact-submit" type="submit" disabled={isSending}>
+              {isSending ? "A enviar..." : "Enviar mensagem"}
             </button>
           </form>
         </div>

@@ -8,7 +8,7 @@ export function Services() {
           <span className="section-kicker">Serviços</span>
           <h2>Soluções para a presença digital e operação da sua empresa.</h2>
           <p>
-            Do primeiro website à infraestrutura que mantém a equipe produtiva, reunimos design, desenvolvimento e
+            Do primeiro website à infraestrutura que mantém a Equipe produtiva, reunimos design, desenvolvimento e
             suporte técnico num serviço direto e organizado.
           </p>
         </div>

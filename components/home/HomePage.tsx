@@ -6,6 +6,7 @@ import { FloatingWhatsapp } from "./FloatingWhatsapp";
 import { Header } from "./Header";
 import { Hero } from "./Hero";
 import { LoadingScreen } from "./LoadingScreen";
+import { Portfolio } from "./Portfolio";
 import { Services } from "./Services";
 import { Team } from "./Team";
 
@@ -18,6 +19,7 @@ export function HomePage() {
       <main id="main">
         <About />
         <Services />
+        <Portfolio />
         <Clients />
         <Team />
         <Contact />

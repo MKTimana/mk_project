@@ -6,9 +6,13 @@ export type Service = {
 
 export type PortfolioProject = {
   image: string;
+  images?: string[];
+  logo: string;
   title: string;
+  description: string;
   type: string;
   href: string;
+  slug: string;
 };
 
 export type TeamMember = {
@@ -58,28 +62,64 @@ export const services: Service[] = [
 
 export const portfolioProjects: PortfolioProject[] = [
   {
-    image: "/assets/img/clients/Unib.png",
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+    logo: "/assets/img/clients/Unib.png",
     title: "UNIBROKERS Correctores de Seguros Lda",
+    description:
+      "Suporte técnico contínuo, manutenção de Equipementos e acompanhamento da infraestrutura digital da empresa.",
     type: "Assistência Técnica",
-    href: "https://unibrokers.co.mz"
+    href: "https://unibrokers.co.mz",
+    slug: "unibrokers"
   },
   {
-    image: "/assets/img/clients/PCD.png",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+    logo: "/assets/img/clients/PCD.png",
     title: "Portos de Cabo Delgado",
+    description:
+      "Assistência técnica e suporte operacional para manter os serviços internos mais estáveis e organizados.",
     type: "Assistência Técnica",
-    href: "https://www.pcd.co.mz/"
+    href: "https://www.pcd.co.mz/",
+    slug: "portos-de-cabo-delgado"
   },
   {
-    image: "/assets/img/clients/3R.png",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    logo: "/assets/img/clients/3R.png",
     title: "3R Mozambique",
+    description:
+      "Website institucional responsivo para apresentar serviços, reforçar a credibilidade e facilitar o contacto com clientes.",
     type: "Website",
-    href: "https://www.3rmozambique.com/"
+    href: "https://www.3rmozambique.com/",
+    slug: "3r-mozambique"
   },
   {
-    image: "/assets/img/clients/haps.png",
+    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
+    logo: "/assets/img/clients/haps.png",
     title: "HAPS Soluções Lda",
+    description:
+      "Configuração e hospedagem de emails corporativos para comunicação profissional e maior confiança da marca.",
     type: "Hospedagem de E-mails",
-    href: "https://haps.co.mz"
+    href: "https://haps.co.mz",
+    slug: "haps-solucoes"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80",
+    logo: "/assets/img/clients/SAS.png",
+    title: "Surveyors Associate & Serviços",
+    description:
+      "Website de apresentação com estrutura clara para destacar áreas de actuação, contactos e posicionamento comercial.",
+    type: "Website",
+    href: "https://sas.co.mz",
+    slug: "surveyors-associate-servicos"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+    logo: "/assets/img/clients/VENSSCO.png",
+    title: "Venssco",
+    description:
+      "Website corporativo com foco em presença online, acesso rápido a informação e comunicação direta com potenciais clientes.",
+    type: "Website",
+    href: "https://venssco.co.mz",
+    slug: "venssco"
   }
 ];
 
@@ -92,19 +132,11 @@ export const team: TeamMember[] = [
     photoPosition: "center 6%"
   },
   {
-    name: "Elton Jorge",
-    role: "Gestor de Projecto || Project Manager",
-    image: "/assets/img/team/EV.jpg",
-    linkedin: "https://www.linkedin.com/in/elton-vilanculo-0a9b66195/",
-    photoPosition: "center 20%"
-  },
-  {
-    name: "Emmerson Lázaro",
-    role: "Gestor de Vendas || Sales Manager",
-    image: "/assets/img/team/E.png",
-    linkedin:
-      "https://www.linkedin.com/in/emmerson-nativo-b68323212?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B6R83uvQyRDeri7Wyf8aoKg%3D%3D",
-    photoPosition: "center 40%"
+    name: "Janairy Timane",
+    role: "Directora Administrativa || Admnistrative Director",
+    image: "/assets/img/team/jt.png",
+    linkedin:"https://www.linkedin.com/company/mktechmz/",
+    photoPosition: "center 35%"
   },
   {
     name: "Cesarino Nhabangue",
