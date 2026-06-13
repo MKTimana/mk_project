@@ -18,91 +18,90 @@ async function buildShareImage(project: PortfolioProject, accessUrl: string) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  canvas.width = 1200;
-  canvas.height = 630;
+  canvas.width = 900;
+  canvas.height = 1200;
 
   if (!ctx) {
     return null;
   }
 
-  const background = ctx.createLinearGradient(0, 0, 1200, 630);
+  const background = ctx.createLinearGradient(0, 0, 900, 1200);
   background.addColorStop(0, "#f5f8fb");
-  background.addColorStop(0.54, "#ffffff");
   background.addColorStop(1, "#e9f6ff");
   ctx.fillStyle = background;
-  ctx.fillRect(0, 0, 1200, 630);
-
-  ctx.fillStyle = "#0f5f9d";
-  ctx.fillRect(0, 0, 18, 630);
+  ctx.fillRect(0, 0, 900, 1200);
 
   ctx.fillStyle = "#ffffff";
   ctx.shadowColor = "rgba(23, 32, 51, 0.14)";
-  ctx.shadowBlur = 28;
-  ctx.shadowOffsetY = 12;
-  ctx.roundRect(58, 48, 1084, 534, 28);
+  ctx.shadowBlur = 34;
+  ctx.shadowOffsetY = 18;
+  ctx.roundRect(90, 70, 720, 1040, 28);
   ctx.fill();
   ctx.shadowColor = "transparent";
   ctx.shadowBlur = 0;
   ctx.shadowOffsetY = 0;
 
-  ctx.fillStyle = "#e9f6ff";
-  ctx.roundRect(96, 86, 192, 38, 19);
-  ctx.fill();
-
-  ctx.fillStyle = "#0f5f9d";
-  ctx.font = "800 18px Arial";
-  ctx.fillText("Portfólio MKTECH", 116, 111);
-
-  ctx.fillStyle = "#172033";
-  ctx.font = "800 44px Arial";
-  wrapCanvasText(ctx, project.title, 96, 184, 510, 54, 2);
-
-  ctx.fillStyle = "#168bd7";
-  ctx.font = "800 23px Arial";
-  ctx.fillText(project.type, 96, 300, 510);
-
-  ctx.fillStyle = "#657084";
-  ctx.font = "400 24px Arial";
-  wrapCanvasText(ctx, project.description, 96, 350, 510, 34, 3);
-
-  drawServiceChips(ctx, getProjectServices(project), 96, 466, 510);
-
-  ctx.fillStyle = "#0f5f9d";
-  ctx.roundRect(96, 522, 132, 38, 19);
-  ctx.fill();
-
-  ctx.fillStyle = "#ffffff";
-  ctx.font = "800 17px Arial";
-  ctx.fillText("Aceder", 132, 547);
-
-  ctx.fillStyle = "#172033";
-  ctx.font = "700 18px Arial";
-  wrapCanvasText(ctx, accessUrl, 246, 545, 368, 24, 2);
-
   ctx.fillStyle = "#f5f8fb";
-  ctx.roundRect(656, 86, 430, 396, 24);
+  ctx.roundRect(115, 105, 670, 420, 24);
   ctx.fill();
 
   try {
     const photo = await loadCanvasImage(getProjectImages(project)[0]);
-    drawCoverImage(ctx, photo, 656, 86, 430, 396, 24);
+    drawCoverImage(ctx, photo, 115, 105, 670, 420, 24);
   } catch {
-    const gradient = ctx.createLinearGradient(656, 86, 1086, 482);
+    const gradient = ctx.createLinearGradient(115, 105, 785, 525);
     gradient.addColorStop(0, "#0f5f9d");
     gradient.addColorStop(0.7, "#168bd7");
     gradient.addColorStop(1, "#172033");
     ctx.fillStyle = gradient;
-    ctx.roundRect(656, 86, 430, 396, 24);
+    ctx.roundRect(115, 105, 670, 420, 24);
     ctx.fill();
   }
 
-  ctx.fillStyle = "#657084";
-  ctx.font = "700 18px Arial";
-  ctx.fillText("Imagem do trabalho", 682, 526);
+  const imageOverlay = ctx.createLinearGradient(115, 525, 115, 285);
+  imageOverlay.addColorStop(0, "rgba(23, 32, 51, 0.86)");
+  imageOverlay.addColorStop(1, "rgba(23, 32, 51, 0.02)");
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(115, 105, 670, 420, 24);
+  ctx.clip();
+  ctx.fillStyle = imageOverlay;
+  ctx.fillRect(115, 105, 670, 420);
+  ctx.restore();
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "800 24px Arial";
+  ctx.fillText(project.type.toUpperCase(), 150, 415, 600);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "800 40px Arial";
+  wrapCanvasText(ctx, project.title, 150, 470, 590, 46, 2);
+
+  ctx.fillStyle = "#168bd7";
+  ctx.font = "800 22px Arial";
+  ctx.fillText(project.type.toUpperCase(), 150, 610, 590);
 
   ctx.fillStyle = "#172033";
-  ctx.font = "800 26px Arial";
-  wrapCanvasText(ctx, project.title, 682, 558, 386, 30, 1);
+  ctx.font = "800 32px Arial";
+  wrapCanvasText(ctx, project.title, 150, 675, 590, 40, 2);
+
+  ctx.fillStyle = "#657084";
+  ctx.font = "400 28px Arial";
+  wrapCanvasText(ctx, project.description, 150, 785, 590, 42, 4);
+
+  drawServiceChips(ctx, getProjectServices(project), 150, 955, 590);
+
+  ctx.fillStyle = "#e9f6ff";
+  ctx.roundRect(150, 1060, 590, 58, 29);
+  ctx.fill();
+
+  ctx.fillStyle = "#0f5f9d";
+  ctx.font = "800 20px Arial";
+  ctx.fillText("Link de acesso enviado com a partilha", 190, 1097, 510);
+
+  ctx.fillStyle = "#172033";
+  ctx.font = "700 18px Arial";
+  wrapCanvasText(ctx, accessUrl, 150, 1160, 590, 24, 1);
 
   return new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
 }
@@ -141,20 +140,20 @@ function drawServiceChips(ctx: CanvasRenderingContext2D, services: string[], x: 
   let currentY = y;
 
   services.slice(0, 4).forEach((service) => {
-    ctx.font = "800 15px Arial";
-    const chipWidth = Math.min(ctx.measureText(service).width + 28, maxWidth);
+    ctx.font = "800 20px Arial";
+    const chipWidth = Math.min(ctx.measureText(service).width + 34, maxWidth);
 
     if (currentX + chipWidth > x + maxWidth) {
       currentX = x;
-      currentY += 36;
+      currentY += 46;
     }
 
     ctx.fillStyle = "#eef7fd";
-    ctx.roundRect(currentX, currentY, chipWidth, 28, 14);
+    ctx.roundRect(currentX, currentY, chipWidth, 38, 19);
     ctx.fill();
     ctx.fillStyle = "#0f5f9d";
-    ctx.fillText(service, currentX + 14, currentY + 19, chipWidth - 28);
-    currentX += chipWidth + 8;
+    ctx.fillText(service, currentX + 17, currentY + 26, chipWidth - 34);
+    currentX += chipWidth + 12;
   });
 }
 
