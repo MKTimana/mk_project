@@ -14,7 +14,7 @@ async function loadCanvasImage(src: string) {
   });
 }
 
-async function buildShareImage(project: PortfolioProject, shareUrl: string) {
+async function buildShareImage(project: PortfolioProject, accessUrl: string) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
@@ -71,9 +71,17 @@ async function buildShareImage(project: PortfolioProject, shareUrl: string) {
   ctx.font = "400 27px Arial";
   wrapCanvasText(ctx, project.description, 112, 390, 548, 38, 3);
 
+  ctx.fillStyle = "#e9f6ff";
+  ctx.roundRect(112, 480, 170, 42, 21);
+  ctx.fill();
+
+  ctx.fillStyle = "#0f5f9d";
+  ctx.font = "800 18px Arial";
+  ctx.fillText("Aceder", 138, 507);
+
   ctx.fillStyle = "#172033";
-  ctx.font = "700 21px Arial";
-  ctx.fillText(shareUrl, 112, 500, 560);
+  ctx.font = "700 20px Arial";
+  wrapCanvasText(ctx, accessUrl, 306, 504, 360, 28, 2);
 
   return new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
 }
@@ -116,29 +124,45 @@ function wrapCanvasText(
   }
 }
 
+function downloadShareCard(blob: Blob, slug: string) {
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = objectUrl;
+  link.download = `mktech-${slug}.png`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(objectUrl);
+}
+
 export function Portfolio() {
   const portfolioProjects = usePortfolioProjects();
   const [galleryProject, setGalleryProject] = useState<PortfolioProject | null>(null);
   const galleryImages = galleryProject ? getProjectImages(galleryProject) : [];
 
   async function shareProject(project: PortfolioProject) {
-    const shareUrl = `${window.location.origin}${window.location.pathname}#portfolio-${project.slug}`;
+    const portfolioUrl = `${window.location.origin}${window.location.pathname}#portfolio-${project.slug}`;
+    const accessUrl = project.href || portfolioUrl;
+    const shareText = `${project.description}\n\nAceder: ${accessUrl}`;
     const shareData = {
       title: `${project.title} | MKTECH`,
-      text: project.description,
-      url: shareUrl
+      text: shareText,
+      url: accessUrl
     };
 
     try {
-      const imageBlob = await buildShareImage(project, shareUrl);
+      const imageBlob = await buildShareImage(project, accessUrl);
 
       if (imageBlob) {
         const file = new File([imageBlob], `mktech-${project.slug}.png`, { type: "image/png" });
+        const shareWithFile = { ...shareData, files: [file] };
 
-        if (navigator.canShare?.({ files: [file] })) {
-          await navigator.share({ ...shareData, files: [file] });
+        if (navigator.canShare?.(shareWithFile)) {
+          await navigator.share(shareWithFile);
           return;
         }
+
+        downloadShareCard(imageBlob, project.slug);
       }
 
       if (navigator.share) {
@@ -146,9 +170,9 @@ export function Portfolio() {
         return;
       }
 
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(shareText);
     } catch {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(shareText);
     }
   }
 
