@@ -147,9 +147,9 @@ export const team: TeamMember[] = [
   {
     name: "Janairy Timane",
     role: "Directora Administrativa || Admnistrative Director",
-    image: "/assets/img/team/Janairy.jpeg",
+    image: "/assets/img/team/Janairy.png",
     linkedin:"https://www.linkedin.com/company/mktechmz/",
-    photoPosition: "center 35%"
+    photoPosition: "center 45%"
   },
   {
     name: "Cesarino Nhabangue",
