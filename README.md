@@ -121,6 +121,7 @@ SMTP_FROM_EMAIL=""
 CONTACT_TO_EMAIL=""
 
 PORTFOLIO_UPLOAD_PROVIDER="r2"
+PORTFOLIO_DATA_KEY="data/portfolio.json"
 
 CLOUDFLARE_R2_ACCOUNT_ID=""
 CLOUDFLARE_R2_ACCESS_KEY_ID=""
@@ -159,6 +160,14 @@ Os projetos do portfolio ficam em:
 data/portfolio.json
 ```
 
+Em desenvolvimento local, o projeto pode ler e escrever nesse ficheiro. Em producao no Vercel, o sistema de ficheiros e somente leitura, por isso as alteracoes feitas no admin devem ser guardadas no Cloudflare R2.
+
+A chave usada para guardar o JSON no R2 e definida por:
+
+```env
+PORTFOLIO_DATA_KEY="data/portfolio.json"
+```
+
 A pagina publica consome os projetos atraves de:
 
 ```text
@@ -177,7 +186,7 @@ As imagens podem ser guardadas de tres formas:
 - Cloudflare Images, quando `PORTFOLIO_UPLOAD_PROVIDER="images"` e as variaveis Cloudflare Images estao configuradas.
 - Localmente em `public/assets/img/portfolio`, caso nenhuma integracao remota esteja configurada.
 
-Para deploy no Vercel, recomenda-se usar Cloudflare R2 ou Cloudflare Images, porque escrita local em producao nao e persistente.
+Para deploy no Vercel, use Cloudflare R2 para guardar o JSON do portfolio e Cloudflare R2 ou Cloudflare Images para guardar as imagens, porque escrita local em producao nao e persistente.
 
 ## Area administrativa
 

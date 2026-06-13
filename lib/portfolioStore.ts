@@ -1,12 +1,14 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import type { PortfolioProject } from "@/data/site";
 
 const portfolioPath = path.join(process.cwd(), "data", "portfolio.json");
 const uploadDir = path.join(process.cwd(), "public", "assets", "img", "portfolio");
 const cloudflareImagesVariant = process.env.CLOUDFLARE_IMAGES_VARIANT || "public";
 const portfolioUploadProvider = process.env.PORTFOLIO_UPLOAD_PROVIDER || "r2";
+const portfolioDataKey = process.env.PORTFOLIO_DATA_KEY || "data/portfolio.json";
+const isReadOnlyRuntime = Boolean(process.env.VERCEL);
 
 type CloudflareImagesResponse = {
   success: boolean;
@@ -59,11 +61,28 @@ function normalizeProject(project: PortfolioProject): PortfolioProject {
 }
 
 export async function getPortfolioProjects() {
+  if (hasCloudflareR2Config()) {
+    const remoteProjects = await getPortfolioProjectsFromR2();
+
+    if (remoteProjects) {
+      return remoteProjects;
+    }
+  }
+
   const content = await readFile(portfolioPath, "utf8");
   return (JSON.parse(content) as PortfolioProject[]).map(normalizeProject);
 }
 
 async function savePortfolioProjects(projects: PortfolioProject[]) {
+  if (hasCloudflareR2Config()) {
+    await savePortfolioProjectsToR2(projects);
+    return;
+  }
+
+  if (isReadOnlyRuntime) {
+    throw new Error("Configure o Cloudflare R2 para guardar alteraÃ§Ãµes do portfÃ³lio em produÃ§Ã£o.");
+  }
+
   await writeFile(portfolioPath, `${JSON.stringify(projects, null, 2)}\n`, "utf8");
 }
 
@@ -138,6 +157,44 @@ function getR2Client() {
   });
 }
 
+async function getPortfolioProjectsFromR2() {
+  try {
+    const response = await getR2Client().send(
+      new GetObjectCommand({
+        Bucket: process.env.CLOUDFLARE_R2_BUCKET,
+        Key: portfolioDataKey
+      })
+    );
+    const content = await response.Body?.transformToString();
+
+    if (!content) {
+      return null;
+    }
+
+    return (JSON.parse(content) as PortfolioProject[]).map(normalizeProject);
+  } catch (error) {
+    const errorName = error instanceof Error ? error.name : "";
+
+    if (errorName === "NoSuchKey" || errorName === "NotFound") {
+      return null;
+    }
+
+    throw error;
+  }
+}
+
+async function savePortfolioProjectsToR2(projects: PortfolioProject[]) {
+  await getR2Client().send(
+    new PutObjectCommand({
+      Bucket: process.env.CLOUDFLARE_R2_BUCKET,
+      Key: portfolioDataKey,
+      Body: `${JSON.stringify(projects, null, 2)}\n`,
+      ContentType: "application/json",
+      CacheControl: "no-cache"
+    })
+  );
+}
+
 async function uploadImageToR2(file: File) {
   const bucket = process.env.CLOUDFLARE_R2_BUCKET;
   const publicUrl = process.env.CLOUDFLARE_R2_PUBLIC_URL?.replace(/\/+$/, "");
@@ -165,6 +222,10 @@ async function uploadImageToR2(file: File) {
 }
 
 async function saveUploadedImageLocally(file: File) {
+  if (isReadOnlyRuntime) {
+    throw new Error("Configure Cloudflare R2 ou Cloudflare Images para guardar imagens em produÃ§Ã£o.");
+  }
+
   const extension = path.extname(file.name).toLowerCase() || ".jpg";
   const safeName = `${Date.now()}-${slugify(file.name.replace(extension, "")) || "imagem"}${extension}`;
   await mkdir(uploadDir, { recursive: true });
