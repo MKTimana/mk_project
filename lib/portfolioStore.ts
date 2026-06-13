@@ -1,13 +1,17 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import type { PortfolioProject } from "@/data/site";
+import type { ClientLogo, PortfolioCategory, PortfolioProject } from "@/data/site";
 
 const portfolioPath = path.join(process.cwd(), "data", "portfolio.json");
+const clientsPath = path.join(process.cwd(), "data", "clients.json");
+const categoriesPath = path.join(process.cwd(), "data", "categories.json");
 const uploadDir = path.join(process.cwd(), "public", "assets", "img", "portfolio");
 const cloudflareImagesVariant = process.env.CLOUDFLARE_IMAGES_VARIANT || "public";
 const portfolioUploadProvider = process.env.PORTFOLIO_UPLOAD_PROVIDER || "r2";
 const portfolioDataKey = process.env.PORTFOLIO_DATA_KEY || "data/portfolio.json";
+const clientsDataKey = process.env.CLIENTS_DATA_KEY || "data/clients.json";
+const categoriesDataKey = process.env.CATEGORIES_DATA_KEY || "data/categories.json";
 const isReadOnlyRuntime = Boolean(process.env.VERCEL);
 
 type CloudflareImagesResponse = {
@@ -46,44 +50,43 @@ function normalizeProject(project: PortfolioProject): PortfolioProject {
   const images = (project.images?.length ? project.images : [project.image])
     .map((image) => image.trim())
     .filter(Boolean);
-  const primaryImage = images[0] || project.image.trim();
+  const primaryImage = images[0] || project.image?.trim() || "";
 
   return {
     image: primaryImage,
     images: images.length ? images : [primaryImage],
-    logo: project.logo.trim(),
+    logo: project.logo?.trim() || "",
     title: project.title.trim(),
     description: project.description.trim(),
     type: project.type.trim(),
-    href: project.href.trim(),
+    href: project.href?.trim() || "",
     slug: project.slug.trim()
   };
 }
 
+function normalizeClient(client: ClientLogo): ClientLogo {
+  return {
+    name: client.name.trim(),
+    logo: client.logo.trim(),
+    href: client.href?.trim() || "",
+    slug: client.slug.trim()
+  };
+}
+
+function normalizeCategory(category: PortfolioCategory): PortfolioCategory {
+  return {
+    name: category.name.trim(),
+    description: category.description?.trim() || "",
+    slug: category.slug.trim()
+  };
+}
+
 export async function getPortfolioProjects() {
-  if (hasCloudflareR2Config()) {
-    const remoteProjects = await getPortfolioProjectsFromR2();
-
-    if (remoteProjects) {
-      return remoteProjects;
-    }
-  }
-
-  const content = await readFile(portfolioPath, "utf8");
-  return (JSON.parse(content) as PortfolioProject[]).map(normalizeProject);
+  return getCollection(portfolioPath, portfolioDataKey, normalizeProject);
 }
 
 async function savePortfolioProjects(projects: PortfolioProject[]) {
-  if (hasCloudflareR2Config()) {
-    await savePortfolioProjectsToR2(projects);
-    return;
-  }
-
-  if (isReadOnlyRuntime) {
-    throw new Error("Configure o Cloudflare R2 para guardar alteraÃ§Ãµes do portfÃ³lio em produÃ§Ã£o.");
-  }
-
-  await writeFile(portfolioPath, `${JSON.stringify(projects, null, 2)}\n`, "utf8");
+  await saveCollection(portfolioPath, portfolioDataKey, projects);
 }
 
 function hasCloudflareImagesConfig() {
@@ -157,12 +160,38 @@ function getR2Client() {
   });
 }
 
-async function getPortfolioProjectsFromR2() {
+async function getCollection<T>(localPath: string, r2Key: string, normalize: (item: T) => T) {
+  if (hasCloudflareR2Config()) {
+    const remoteItems = await getCollectionFromR2(r2Key, normalize);
+
+    if (remoteItems) {
+      return remoteItems;
+    }
+  }
+
+  const content = await readFile(localPath, "utf8");
+  return (JSON.parse(content) as T[]).map(normalize);
+}
+
+async function saveCollection<T>(localPath: string, r2Key: string, items: T[]) {
+  if (hasCloudflareR2Config()) {
+    await saveCollectionToR2(r2Key, items);
+    return;
+  }
+
+  if (isReadOnlyRuntime) {
+    throw new Error("Configure o Cloudflare R2 para guardar alteraÃ§Ãµes em produÃ§Ã£o.");
+  }
+
+  await writeFile(localPath, `${JSON.stringify(items, null, 2)}\n`, "utf8");
+}
+
+async function getCollectionFromR2<T>(r2Key: string, normalize: (item: T) => T) {
   try {
     const response = await getR2Client().send(
       new GetObjectCommand({
         Bucket: process.env.CLOUDFLARE_R2_BUCKET,
-        Key: portfolioDataKey
+        Key: r2Key
       })
     );
     const content = await response.Body?.transformToString();
@@ -171,7 +200,7 @@ async function getPortfolioProjectsFromR2() {
       return null;
     }
 
-    return (JSON.parse(content) as PortfolioProject[]).map(normalizeProject);
+    return (JSON.parse(content) as T[]).map(normalize);
   } catch (error) {
     const errorName = error instanceof Error ? error.name : "";
 
@@ -183,12 +212,12 @@ async function getPortfolioProjectsFromR2() {
   }
 }
 
-async function savePortfolioProjectsToR2(projects: PortfolioProject[]) {
+async function saveCollectionToR2<T>(r2Key: string, items: T[]) {
   await getR2Client().send(
     new PutObjectCommand({
       Bucket: process.env.CLOUDFLARE_R2_BUCKET,
-      Key: portfolioDataKey,
-      Body: `${JSON.stringify(projects, null, 2)}\n`,
+      Key: r2Key,
+      Body: `${JSON.stringify(items, null, 2)}\n`,
       ContentType: "application/json",
       CacheControl: "no-cache"
     })
@@ -296,5 +325,101 @@ export async function deletePortfolioProject(slug: string) {
   }
 
   await savePortfolioProjects(nextProjects);
+  return true;
+}
+
+export async function getClients() {
+  return getCollection(clientsPath, clientsDataKey, normalizeClient);
+}
+
+async function saveClients(clients: ClientLogo[]) {
+  await saveCollection(clientsPath, clientsDataKey, clients);
+}
+
+export async function createClient(input: Omit<ClientLogo, "slug">) {
+  const clients = await getClients();
+  const client = normalizeClient({
+    ...input,
+    slug: uniqueSlug(input.name, clients.map((item) => ({ slug: item.slug } as PortfolioProject)))
+  });
+
+  clients.unshift(client);
+  await saveClients(clients);
+
+  return client;
+}
+
+export async function updateClient(slug: string, input: Omit<ClientLogo, "slug">) {
+  const clients = await getClients();
+  const index = clients.findIndex((client) => client.slug === slug);
+
+  if (index === -1) {
+    return null;
+  }
+
+  const client = normalizeClient({ ...input, slug });
+  clients[index] = client;
+  await saveClients(clients);
+
+  return client;
+}
+
+export async function deleteClient(slug: string) {
+  const clients = await getClients();
+  const nextClients = clients.filter((client) => client.slug !== slug);
+
+  if (nextClients.length === clients.length) {
+    return false;
+  }
+
+  await saveClients(nextClients);
+  return true;
+}
+
+export async function getCategories() {
+  return getCollection(categoriesPath, categoriesDataKey, normalizeCategory);
+}
+
+async function saveCategories(categories: PortfolioCategory[]) {
+  await saveCollection(categoriesPath, categoriesDataKey, categories);
+}
+
+export async function createCategory(input: Omit<PortfolioCategory, "slug">) {
+  const categories = await getCategories();
+  const category = normalizeCategory({
+    ...input,
+    slug: uniqueSlug(input.name, categories.map((item) => ({ slug: item.slug } as PortfolioProject)))
+  });
+
+  categories.unshift(category);
+  await saveCategories(categories);
+
+  return category;
+}
+
+export async function updateCategory(slug: string, input: Omit<PortfolioCategory, "slug">) {
+  const categories = await getCategories();
+  const index = categories.findIndex((category) => category.slug === slug);
+
+  if (index === -1) {
+    return null;
+  }
+
+  const category = normalizeCategory({ ...input, slug });
+  categories[index] = category;
+  await saveCategories(categories);
+
+  return category;
+}
+
+export async function deleteCategory(slug: string) {
+  const categories = await getCategories();
+  const nextCategories = categories.filter((category) => category.slug !== slug);
+
+  if (nextCategories.length === categories.length) {
+    return false;
+  }
+
+  await saveCategories(nextCategories);
   return true;
 }

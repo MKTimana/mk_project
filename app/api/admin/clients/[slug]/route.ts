@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { canDeleteContent, isAdminAuthenticated } from "@/lib/adminAuth";
-import { deletePortfolioProject, saveUploadedImage, saveUploadedImages, updatePortfolioProject } from "@/lib/portfolioStore";
+import { deleteClient, saveUploadedImage, updateClient } from "@/lib/portfolioStore";
 
 export const runtime = "nodejs";
 
@@ -16,40 +16,24 @@ export async function PUT(request: Request, context: RouteContext) {
   try {
     const { slug } = await context.params;
     const formData = await request.formData();
-    const images = await saveUploadedImages(
-      formData.getAll("imageFiles") as File[],
-      parseImageList(String(formData.get("images") || formData.get("image") || ""))
-    );
     const logo = await saveUploadedImage(formData.get("logoFile") as File | null, String(formData.get("logo") || ""));
-
-    const project = await updatePortfolioProject(slug, {
-      image: images[0] || "",
-      images,
+    const client = await updateClient(slug, {
+      name: String(formData.get("name") || ""),
       logo,
-      title: String(formData.get("title") || ""),
-      description: String(formData.get("description") || ""),
-      type: String(formData.get("type") || ""),
       href: String(formData.get("href") || "")
     });
 
-    if (!project) {
-      return NextResponse.json({ message: "Portfolio nao encontrado." }, { status: 404 });
+    if (!client) {
+      return NextResponse.json({ message: "Cliente nao encontrado." }, { status: 404 });
     }
 
-    return NextResponse.json(project);
+    return NextResponse.json(client);
   } catch (error) {
     return NextResponse.json(
-      { message: error instanceof Error ? error.message : "Nao foi possivel guardar o portfolio." },
+      { message: error instanceof Error ? error.message : "Nao foi possivel guardar o cliente." },
       { status: 400 }
     );
   }
-}
-
-function parseImageList(value: string) {
-  return value
-    .split(/\r?\n|,/)
-    .map((image) => image.trim())
-    .filter(Boolean);
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
@@ -62,10 +46,10 @@ export async function DELETE(_request: Request, context: RouteContext) {
   }
 
   const { slug } = await context.params;
-  const deleted = await deletePortfolioProject(slug);
+  const deleted = await deleteClient(slug);
 
   if (!deleted) {
-    return NextResponse.json({ message: "Portfolio nao encontrado." }, { status: 404 });
+    return NextResponse.json({ message: "Cliente nao encontrado." }, { status: 404 });
   }
 
   return NextResponse.json({ ok: true });

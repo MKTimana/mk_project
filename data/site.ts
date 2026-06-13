@@ -11,7 +11,20 @@ export type PortfolioProject = {
   title: string;
   description: string;
   type: string;
-  href: string;
+  href?: string;
+  slug: string;
+};
+
+export type ClientLogo = {
+  name: string;
+  logo: string;
+  href?: string;
+  slug: string;
+};
+
+export type PortfolioCategory = {
+  name: string;
+  description?: string;
   slug: string;
 };
 

@@ -119,9 +119,12 @@ SMTP_USER=""
 SMTP_PASS=""
 SMTP_FROM_EMAIL=""
 CONTACT_TO_EMAIL=""
+ADMIN_USERS='[{"email":"admin@mktech.co.mz","password":"change-me","role":"admin"},{"email":"editor@mktech.co.mz","password":"change-me","role":"editor"}]'
 
 PORTFOLIO_UPLOAD_PROVIDER="r2"
 PORTFOLIO_DATA_KEY="data/portfolio.json"
+CLIENTS_DATA_KEY="data/clients.json"
+CATEGORIES_DATA_KEY="data/categories.json"
 
 CLOUDFLARE_R2_ACCOUNT_ID=""
 CLOUDFLARE_R2_ACCESS_KEY_ID=""
@@ -166,6 +169,8 @@ A chave usada para guardar o JSON no R2 e definida por:
 
 ```env
 PORTFOLIO_DATA_KEY="data/portfolio.json"
+CLIENTS_DATA_KEY="data/clients.json"
+CATEGORIES_DATA_KEY="data/categories.json"
 ```
 
 A pagina publica consome os projetos atraves de:
@@ -203,6 +208,15 @@ lib/adminAuth.ts
 ```
 
 Antes de colocar o projeto em producao, altere as credenciais do admin e, idealmente, mova-as para variaveis de ambiente.
+
+O acesso por roles e configurado com `ADMIN_USERS`.
+
+```env
+ADMIN_USERS='[{"email":"admin@mktech.co.mz","password":"senha-forte","role":"admin"},{"email":"editor@mktech.co.mz","password":"senha-forte","role":"editor"}]'
+```
+
+- `admin`: pode criar, ver, editar e apagar.
+- `editor`: pode criar, ver e editar, mas nao pode apagar.
 
 ## Deploy no Vercel
 

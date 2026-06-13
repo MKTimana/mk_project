@@ -1214,12 +1214,67 @@ main > section {
   max-width: 1220px;
 }
 
+.admin-userbar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.admin-userbar span {
+  color: var(--mk-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.admin-userbar strong {
+  background: #e9f6ff;
+  border-radius: 999px;
+  color: var(--mk-blue-dark);
+  font-size: 12px;
+  padding: 7px 10px;
+}
+
+.admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 auto 22px;
+  max-width: 1220px;
+}
+
+.admin-tabs button {
+  background: #fff;
+  border: 1px solid var(--mk-line);
+  border-radius: 8px;
+  color: var(--mk-ink);
+  font-weight: 800;
+  min-height: 42px;
+  padding: 0 16px;
+}
+
+.admin-tabs button.active {
+  background: var(--mk-blue);
+  border-color: var(--mk-blue);
+  color: #fff;
+}
+
+.admin-global-status {
+  margin: 0 auto 18px;
+  max-width: 1220px;
+}
+
 .admin-grid {
   display: grid;
   gap: 24px;
   grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
   margin: 0 auto 24px;
   max-width: 1220px;
+}
+
+.admin-grid-single {
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .admin-panel {
@@ -1311,6 +1366,13 @@ main > section {
   border-radius: 8px;
   height: auto;
   object-fit: cover;
+  width: 120px;
+}
+
+.admin-row-placeholder {
+  aspect-ratio: 16 / 10;
+  background: #eef3f8;
+  border-radius: 8px;
   width: 120px;
 }
 

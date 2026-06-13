@@ -168,6 +168,7 @@ export function Portfolio() {
           {portfolioProjects.map((project, index) => (
             <div className="col-xl-4 col-md-6 portfolio-item" key={project.slug}>
               <article id={`portfolio-${project.slug}`} className="portfolio-card portfolio-work-card">
+                {project.href ? (
                 <a className="portfolio-work-link" href={project.href} target="_blank" rel="noreferrer">
                   <div className={`portfolio-template portfolio-template-${(index % 3) + 1}`}>
                     <img src={getProjectImages(project)[0]} className="img-fluid" alt="" />
@@ -183,14 +184,35 @@ export function Portfolio() {
                     </div>
                   </div>
                 </a>
+                ) : (
+                  <div className="portfolio-work-link">
+                    <div className={`portfolio-template portfolio-template-${(index % 3) + 1}`}>
+                      <img src={getProjectImages(project)[0]} className="img-fluid" alt="" />
+                      {getProjectImages(project).length > 1 ? (
+                        <span className="portfolio-gallery-count">
+                          <i className="bi bi-images" />
+                          {getProjectImages(project).length}
+                        </span>
+                      ) : null}
+                      <div className="portfolio-image-caption">
+                        <span>{project.type}</span>
+                        <strong>{project.title}</strong>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="portfolio-work-body">
                   <span className="portfolio-work-type">{project.type}</span>
-                  <h3>
+                  {project.href ? (
+                    <h3>
                     <a href={project.href} target="_blank" rel="noreferrer">
                       {project.title}
                     </a>
-                  </h3>
+                    </h3>
+                  ) : (
+                    <h3>{project.title}</h3>
+                  )}
                   {getProjectImages(project).length > 1 ? (
                     <button
                       type="button"
@@ -205,9 +227,11 @@ export function Portfolio() {
                 </div>
 
                 <div className="portfolio-work-actions">
+                  {project.href ? (
                   <a href={project.href} target="_blank" rel="noreferrer" className="portfolio-visit-link">
                     Ver trabalho
                   </a>
+                  ) : null}
                   <button type="button" className="portfolio-share-button" onClick={() => shareProject(project)}>
                     <i className="bi bi-share" />
                     <span>Partilhar</span>

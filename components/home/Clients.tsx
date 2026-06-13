@@ -1,9 +1,9 @@
 "use client";
 
-import { usePortfolioProjects } from "./usePortfolioProjects";
+import { useClients } from "./useClients";
 
 export function Clients() {
-  const portfolioProjects = usePortfolioProjects();
+  const clients = useClients();
 
   return (
     <section id="cliens" className="portfolio clients-section section-bg">
@@ -15,19 +15,21 @@ export function Clients() {
         </div>
 
         <div className="row portfolio-container clients-project-grid g-4" data-aos="fade-up" data-aos-delay="100">
-          {portfolioProjects.map((project) => (
-            <div className="col-lg-3 col-md-4 col-6 portfolio-item" key={project.title}>
-              <a
-                className="portfolio-card client-project-card"
-                href={project.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Abrir ${project.title}`}
-              >
+          {clients.map((client) => (
+            <div className="col-lg-3 col-md-4 col-6 portfolio-item" key={client.slug}>
+              {client.href ? (
+              <a className="portfolio-card client-project-card" href={client.href} target="_blank" rel="noreferrer" aria-label={`Abrir ${client.name}`}>
                 <div className="portfolio-img">
-                  <img src={project.logo} className="img-fluid" alt={project.title} />
+                  <img src={client.logo} className="img-fluid" alt={client.name} />
                 </div>
               </a>
+              ) : (
+                <div className="portfolio-card client-project-card" aria-label={client.name}>
+                  <div className="portfolio-img">
+                    <img src={client.logo} className="img-fluid" alt={client.name} />
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
