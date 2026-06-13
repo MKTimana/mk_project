@@ -397,11 +397,11 @@ export default function AdminPage() {
                 <input accept="image/*" multiple onChange={(event) => setImageFiles(Array.from(event.target.files || []))} required={!portfolioForm.images && !imageFiles.length} type="file" />
               </label>
               <label>
-                Link do logo relacionado opcional
+                Link do logo relacionado (opcional)
                 <input value={portfolioForm.logo} onChange={(event) => updatePortfolioField("logo", event.target.value)} type="url" placeholder="https://..." />
               </label>
               <label>
-                Upload do logo relacionado
+                Upload do logo
                 <input accept="image/*" onChange={(event) => setPortfolioLogoFile(event.target.files?.[0] || null)} required={!portfolioForm.logo && !portfolioLogoFile} type="file" />
               </label>
               <div className="admin-actions">
