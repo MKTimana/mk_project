@@ -6,12 +6,25 @@ import { usePortfolioProjects } from "./usePortfolioProjects";
 
 async function loadCanvasImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
+    if (!src) {
+      reject(new Error("Imagem ausente."));
+      return;
+    }
+
     const image = new Image();
     image.crossOrigin = "anonymous";
     image.onload = () => resolve(image);
     image.onerror = reject;
-    image.src = src;
+    image.src = getCanvasImageSource(src);
   });
+}
+
+function getCanvasImageSource(src: string) {
+  if (src.startsWith("http://") || src.startsWith("https://")) {
+    return `/api/image-proxy?url=${encodeURIComponent(src)}`;
+  }
+
+  return src;
 }
 
 async function buildShareImage(project: PortfolioProject, _accessUrl: string) {
@@ -28,43 +41,30 @@ async function buildShareImage(project: PortfolioProject, _accessUrl: string) {
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, 760, 1000);
 
+  fillRoundRect(ctx, 16, 16, 728, 968, 26, "#ffffff");
+  strokeRoundRect(ctx, 16, 16, 728, 968, 26, "#bde3fb", 2);
+
+  fillRoundRect(ctx, 16, 16, 728, 430, 26, "#172033");
+
   ctx.strokeStyle = "#bde3fb";
   ctx.lineWidth = 2;
-  ctx.roundRect(16, 16, 728, 968, 26);
-  ctx.stroke();
-
-  ctx.save();
-  ctx.beginPath();
-  ctx.roundRect(16, 16, 728, 968, 26);
-  ctx.clip();
-
-  ctx.fillStyle = "#ffffff";
-  ctx.roundRect(16, 16, 728, 968, 26);
-  ctx.fill();
-
-  ctx.fillStyle = "#f5f8fb";
-  ctx.fillRect(16, 16, 728, 430);
-  ctx.fill();
 
   try {
     const photo = await loadCanvasImage(getProjectImages(project)[0]);
-    drawCoverImage(ctx, photo, 16, 16, 728, 430, 0);
+    drawTopCoverImage(ctx, photo, 16, 16, 728, 430, 26);
   } catch {
     const gradient = ctx.createLinearGradient(16, 16, 744, 446);
     gradient.addColorStop(0, "#0f5f9d");
     gradient.addColorStop(0.7, "#168bd7");
     gradient.addColorStop(1, "#172033");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(16, 16, 728, 430);
-    ctx.fill();
+    fillTopRoundRect(ctx, 16, 16, 728, 430, 26, gradient);
   }
 
   const imageOverlay = ctx.createLinearGradient(16, 446, 16, 210);
   imageOverlay.addColorStop(0, "rgba(23, 32, 51, 0.92)");
   imageOverlay.addColorStop(0.62, "rgba(23, 32, 51, 0.38)");
   imageOverlay.addColorStop(1, "rgba(23, 32, 51, 0)");
-  ctx.fillStyle = imageOverlay;
-  ctx.fillRect(16, 16, 728, 430);
+  fillTopRoundRect(ctx, 16, 16, 728, 430, 26, imageOverlay);
 
   ctx.fillStyle = "#ffffff";
   ctx.font = "800 26px Arial";
@@ -87,7 +87,6 @@ async function buildShareImage(project: PortfolioProject, _accessUrl: string) {
   wrapCanvasText(ctx, project.description, 62, 705, 620, 42, 4);
 
   drawServiceChips(ctx, getProjectServices(project), 62, 865, 620);
-  ctx.restore();
 
   return new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
 }
@@ -100,7 +99,64 @@ function getProjectServices(project: PortfolioProject) {
   return project.services?.length ? project.services : [project.type].filter(Boolean);
 }
 
-function drawCoverImage(
+function fillRoundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number,
+  fillStyle: string | CanvasGradient
+) {
+  ctx.beginPath();
+  ctx.roundRect(x, y, width, height, radius);
+  ctx.fillStyle = fillStyle;
+  ctx.fill();
+}
+
+function strokeRoundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number,
+  strokeStyle: string,
+  lineWidth: number
+) {
+  ctx.beginPath();
+  ctx.roundRect(x, y, width, height, radius);
+  ctx.strokeStyle = strokeStyle;
+  ctx.lineWidth = lineWidth;
+  ctx.stroke();
+}
+
+function fillTopRoundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number,
+  fillStyle: string | CanvasGradient
+) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height);
+  ctx.lineTo(x, y + height);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+  ctx.clip();
+  ctx.fillStyle = fillStyle;
+  ctx.fillRect(x, y, width, height);
+  ctx.restore();
+}
+
+function drawTopCoverImage(
   ctx: CanvasRenderingContext2D,
   image: HTMLImageElement,
   x: number,
@@ -115,11 +171,14 @@ function drawCoverImage(
 
   ctx.save();
   ctx.beginPath();
-  if (radius > 0) {
-    ctx.roundRect(x, y, width, height, radius);
-  } else {
-    ctx.rect(x, y, width, height);
-  }
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + width - radius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  ctx.lineTo(x + width, y + height);
+  ctx.lineTo(x, y + height);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
   ctx.clip();
   ctx.drawImage(image, x + (width - imageWidth) / 2, y + (height - imageHeight) / 2, imageWidth, imageHeight);
   ctx.restore();
@@ -138,13 +197,8 @@ function drawServiceChips(ctx: CanvasRenderingContext2D, services: string[], x: 
       currentY += 56;
     }
 
-    ctx.fillStyle = "#eef7fd";
-    ctx.roundRect(currentX, currentY, chipWidth, 44, 22);
-    ctx.fill();
-    ctx.strokeStyle = "#bde3fb";
-    ctx.lineWidth = 1.5;
-    ctx.roundRect(currentX, currentY, chipWidth, 44, 22);
-    ctx.stroke();
+    fillRoundRect(ctx, currentX, currentY, chipWidth, 44, 22, "#eef7fd");
+    strokeRoundRect(ctx, currentX, currentY, chipWidth, 44, 22, "#bde3fb", 1.5);
     ctx.fillStyle = "#0f5f9d";
     ctx.fillText(service, currentX + 18, currentY + 30, chipWidth - 36);
     currentX += chipWidth + 14;
