@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ message: "Nao autorizado." }, { status: 401 });
+    return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
 
   return NextResponse.json(await getClients());
@@ -14,7 +14,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ message: "Nao autorizado." }, { status: 401 });
+    return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
 
   try {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     return NextResponse.json(client, { status: 201 });
   } catch (error) {
     return NextResponse.json(
-      { message: error instanceof Error ? error.message : "Nao foi possivel guardar o cliente." },
+      { message: error instanceof Error ? error.message : "Não foi possível guardar o cliente." },
       { status: 400 }
     );
   }

@@ -2,7 +2,7 @@
 
 Website institucional da MKTECH desenvolvido com Next.js, React e TypeScript.
 
-O projeto inclui a pagina publica da empresa, formulario de contacto por email, secao de portfolio gerida por dados JSON e uma area administrativa simples para criar, editar e remover projetos do portfolio.
+O projeto inclui a página pública da empresa, formulário de contacto por email, secção de portfólio gerida por dados JSON e uma área administrativa simples para criar, editar e remover projetos do portfólio.
 
 ## Tecnologias
 
@@ -10,7 +10,7 @@ O projeto inclui a pagina publica da empresa, formulario de contacto por email, 
 - React 19
 - TypeScript
 - Nodemailer para envio de emails
-- Cloudflare R2 ou Cloudflare Images para upload de imagens do portfolio
+- Cloudflare R2 ou Cloudflare Images para upload de imagens do portfólio
 - AWS SDK S3 Client para integracao com R2
 
 ## Estrutura principal
@@ -19,18 +19,18 @@ O projeto inclui a pagina publica da empresa, formulario de contacto por email, 
 app/
   page.tsx                  Pagina inicial
   layout.tsx                Layout global
-  admin/page.tsx            Area administrativa
-  api/contact/route.ts      Endpoint do formulario de contacto
-  api/portfolio/route.ts    Endpoint publico do portfolio
+  admin/page.tsx            Área administrativa
+  api/contact/route.ts      Endpoint do formulário de contacto
+  api/portfolio/route.ts    Endpoint público do portfólio
   api/admin/*               Endpoints protegidos do admin
 
 components/home/
   HomePage.tsx              Composicao da pagina inicial
   Header.tsx                Navegacao
-  Hero.tsx                  Seccao inicial
+  Hero.tsx                  Secção inicial
   About.tsx                 Sobre a empresa
-  Services.tsx              Servicos
-  Portfolio.tsx             Portfolio
+  Services.tsx              Serviços
+  Portfolio.tsx             Portfólio
   Clients.tsx               Clientes
   Team.tsx                  Equipa
   Contact.tsx               Formulario de contacto
@@ -38,11 +38,11 @@ components/home/
 
 data/
   site.ts                   Conteudo principal do website
-  portfolio.json            Projetos exibidos no portfolio
+  portfolio.json            Projetos exibidos no portfólio
 
 lib/
   adminAuth.ts              Login e sessao do admin
-  portfolioStore.ts         Leitura, escrita e upload de imagens do portfolio
+  portfolioStore.ts         Leitura, escrita e upload de imagens do portfólio
 
 public/assets/
   img/                      Imagens publicas do site
@@ -93,13 +93,13 @@ Remove a pasta `.next` e inicia o desenvolvimento novamente.
 npm run build
 ```
 
-Gera a versao de producao.
+Gera a versão de produção.
 
 ```powershell
 npm run start
 ```
 
-Executa a versao de producao depois do build.
+Executa a versão de produção depois do build.
 
 ```powershell
 npm run lint
@@ -155,15 +155,15 @@ Variaveis opcionais:
 - `SMTP_FROM_EMAIL`, caso queira usar um remetente diferente do `SMTP_USER`
 - `CONTACT_TO_EMAIL`, destino das mensagens recebidas
 
-## Portfolio
+## Portfólio
 
-Os projetos do portfolio ficam em:
+Os projetos do portfólio ficam em:
 
 ```text
 data/portfolio.json
 ```
 
-Em desenvolvimento local, o projeto pode ler e escrever nesse ficheiro. Em producao no Vercel, o sistema de ficheiros e somente leitura, por isso as alteracoes feitas no admin devem ser guardadas no Cloudflare R2.
+Em desenvolvimento local, o projeto pode ler e escrever nesse ficheiro. Em produção no Vercel, o sistema de ficheiros é somente leitura, por isso as alterações feitas no admin devem ser guardadas no Cloudflare R2.
 
 A chave usada para guardar o JSON no R2 e definida por:
 
@@ -191,9 +191,9 @@ As imagens podem ser guardadas de tres formas:
 - Cloudflare Images, quando `PORTFOLIO_UPLOAD_PROVIDER="images"` e as variaveis Cloudflare Images estao configuradas.
 - Localmente em `public/assets/img/portfolio`, caso nenhuma integracao remota esteja configurada.
 
-Para deploy no Vercel, use Cloudflare R2 para guardar o JSON do portfolio e Cloudflare R2 ou Cloudflare Images para guardar as imagens, porque escrita local em producao nao e persistente.
+Para deploy no Vercel, use Cloudflare R2 para guardar o JSON do portfólio e Cloudflare R2 ou Cloudflare Images para guardar as imagens, porque escrita local em produção não é persistente.
 
-## Area administrativa
+## Área administrativa
 
 A area administrativa esta disponivel em:
 
@@ -207,7 +207,7 @@ O login e a sessao sao controlados em:
 lib/adminAuth.ts
 ```
 
-Antes de colocar o projeto em producao, altere as credenciais do admin e, idealmente, mova-as para variaveis de ambiente.
+Antes de colocar o projeto em produção, altere as credenciais do admin e, idealmente, mova-as para variáveis de ambiente.
 
 O acesso por roles e configurado com `ADMIN_USERS`.
 
@@ -216,7 +216,7 @@ ADMIN_USERS='[{"email":"admin@mktech.co.mz","password":"senha-forte","role":"adm
 ```
 
 - `admin`: pode criar, ver, editar e apagar.
-- `editor`: pode criar, ver e editar, mas nao pode apagar.
+- `editor`: pode criar, ver e editar, mas não pode apagar.
 
 ## Deploy no Vercel
 
@@ -227,7 +227,7 @@ ADMIN_USERS='[{"email":"admin@mktech.co.mz","password":"senha-forte","role":"adm
 5. Adicionar as variaveis de ambiente.
 6. Fazer deploy.
 
-Configuracao recomendada:
+Configuração recomendada:
 
 ```text
 Install Command: npm install
@@ -237,8 +237,8 @@ Output Directory: default
 
 ## Observacoes importantes
 
-- O ficheiro `.env` nao deve ser enviado para o GitHub.
-- A pasta `.next` e `node_modules` tambem nao devem ser versionadas.
-- Para atualizar conteudos fixos do site, edite `data/site.ts`.
+- O ficheiro `.env` não deve ser enviado para o GitHub.
+- A pasta `.next` e `node_modules` também não devem ser versionadas.
+- Para atualizar conteúdos fixos do site, edite `data/site.ts`.
 - Para atualizar projetos manualmente, edite `data/portfolio.json`.
-- Para imagens persistentes em producao, use Cloudflare R2 ou Cloudflare Images.
+- Para imagens persistentes em produção, use Cloudflare R2 ou Cloudflare Images.

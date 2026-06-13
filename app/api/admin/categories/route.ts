@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 
 export async function GET() {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ message: "Nao autorizado." }, { status: 401 });
+    return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
 
   return NextResponse.json(await getCategories());
@@ -14,7 +14,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ message: "Nao autorizado." }, { status: 401 });
+    return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
 
   try {
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     return NextResponse.json(category, { status: 201 });
   } catch (error) {
     return NextResponse.json(
-      { message: error instanceof Error ? error.message : "Nao foi possivel guardar a categoria." },
+      { message: error instanceof Error ? error.message : "Não foi possível guardar a categoria." },
       { status: 400 }
     );
   }

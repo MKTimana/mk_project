@@ -180,7 +180,7 @@ async function saveCollection<T>(localPath: string, r2Key: string, items: T[]) {
   }
 
   if (isReadOnlyRuntime) {
-    throw new Error("Configure o Cloudflare R2 para guardar alteraÃ§Ãµes em produÃ§Ã£o.");
+    throw new Error("Configure o Cloudflare R2 para guardar alterações em produção.");
   }
 
   await writeFile(localPath, `${JSON.stringify(items, null, 2)}\n`, "utf8");
@@ -252,7 +252,7 @@ async function uploadImageToR2(file: File) {
 
 async function saveUploadedImageLocally(file: File) {
   if (isReadOnlyRuntime) {
-    throw new Error("Configure Cloudflare R2 ou Cloudflare Images para guardar imagens em produÃ§Ã£o.");
+    throw new Error("Configure Cloudflare R2 ou Cloudflare Images para guardar imagens em produção.");
   }
 
   const extension = path.extname(file.name).toLowerCase() || ".jpg";

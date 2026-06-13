@@ -10,7 +10,7 @@ type RouteContext = {
 
 export async function PUT(request: Request, context: RouteContext) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ message: "Nao autorizado." }, { status: 401 });
+    return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
 
   try {
@@ -24,13 +24,13 @@ export async function PUT(request: Request, context: RouteContext) {
     });
 
     if (!client) {
-      return NextResponse.json({ message: "Cliente nao encontrado." }, { status: 404 });
+      return NextResponse.json({ message: "Cliente não encontrado." }, { status: 404 });
     }
 
     return NextResponse.json(client);
   } catch (error) {
     return NextResponse.json(
-      { message: error instanceof Error ? error.message : "Nao foi possivel guardar o cliente." },
+      { message: error instanceof Error ? error.message : "Não foi possível guardar o cliente." },
       { status: 400 }
     );
   }
@@ -38,18 +38,18 @@ export async function PUT(request: Request, context: RouteContext) {
 
 export async function DELETE(_request: Request, context: RouteContext) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ message: "Nao autorizado." }, { status: 401 });
+    return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
 
   if (!(await canDeleteContent())) {
-    return NextResponse.json({ message: "Apenas administradores podem apagar conteudo." }, { status: 403 });
+    return NextResponse.json({ message: "Apenas administradores podem apagar conteúdo." }, { status: 403 });
   }
 
   const { slug } = await context.params;
   const deleted = await deleteClient(slug);
 
   if (!deleted) {
-    return NextResponse.json({ message: "Cliente nao encontrado." }, { status: 404 });
+    return NextResponse.json({ message: "Cliente não encontrado." }, { status: 404 });
   }
 
   return NextResponse.json({ ok: true });

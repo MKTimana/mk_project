@@ -10,7 +10,7 @@ type RouteContext = {
 
 export async function PUT(request: Request, context: RouteContext) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ message: "Nao autorizado." }, { status: 401 });
+    return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
 
   try {
@@ -33,13 +33,13 @@ export async function PUT(request: Request, context: RouteContext) {
     });
 
     if (!project) {
-      return NextResponse.json({ message: "Portfolio nao encontrado." }, { status: 404 });
+      return NextResponse.json({ message: "Portfólio não encontrado." }, { status: 404 });
     }
 
     return NextResponse.json(project);
   } catch (error) {
     return NextResponse.json(
-      { message: error instanceof Error ? error.message : "Nao foi possivel guardar o portfolio." },
+      { message: error instanceof Error ? error.message : "Não foi possível guardar o portfólio." },
       { status: 400 }
     );
   }
@@ -54,18 +54,18 @@ function parseImageList(value: string) {
 
 export async function DELETE(_request: Request, context: RouteContext) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ message: "Nao autorizado." }, { status: 401 });
+    return NextResponse.json({ message: "Não autorizado." }, { status: 401 });
   }
 
   if (!(await canDeleteContent())) {
-    return NextResponse.json({ message: "Apenas administradores podem apagar conteudo." }, { status: 403 });
+    return NextResponse.json({ message: "Apenas administradores podem apagar conteúdo." }, { status: 403 });
   }
 
   const { slug } = await context.params;
   const deleted = await deletePortfolioProject(slug);
 
   if (!deleted) {
-    return NextResponse.json({ message: "Portfolio nao encontrado." }, { status: 404 });
+    return NextResponse.json({ message: "Portfólio não encontrado." }, { status: 404 });
   }
 
   return NextResponse.json({ ok: true });

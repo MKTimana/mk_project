@@ -166,7 +166,7 @@ export default function AdminPage() {
 
     await finishSave(response, loadProjects, () => {
       resetPortfolioForm();
-      return editingPortfolioSlug ? "Portfolio atualizado com sucesso." : "Portfolio adicionado com sucesso.";
+      return editingPortfolioSlug ? "Portfólio atualizado com sucesso." : "Portfólio adicionado com sucesso.";
     });
   }
 
@@ -211,7 +211,7 @@ export default function AdminPage() {
   async function finishSave(response: Response, reload: () => Promise<void>, onSuccess: () => string) {
     if (!response.ok) {
       const data = await response.json().catch(() => null);
-      setStatus(data?.message || "Nao foi possivel guardar. Verifique os campos e tente novamente.");
+      setStatus(data?.message || "Não foi possível guardar. Verifique os campos e tente novamente.");
       setIsSaving(false);
       return;
     }
@@ -258,7 +258,7 @@ export default function AdminPage() {
 
   async function deleteItem(label: string, url: string, reload: () => Promise<void>, afterDelete?: () => void) {
     if (!canDelete) {
-      setStatus("Apenas administradores podem apagar conteudo.");
+      setStatus("Apenas administradores podem apagar conteúdo.");
       return;
     }
 
@@ -273,7 +273,7 @@ export default function AdminPage() {
     }
 
     const data = await response.json().catch(() => null);
-    setStatus(data?.message || "Nao foi possivel remover.");
+    setStatus(data?.message || "Não foi possível remover.");
   }
 
   function resetPortfolioForm() {
@@ -311,8 +311,8 @@ export default function AdminPage() {
           <a className="admin-brand" href="/">
             <img src="/assets/img/mklogo.png" alt="MKTECH" />
           </a>
-          <h1>Area de Administracao</h1>
-          <p>Entre para gerir portfolios, clientes e categorias publicados no site.</p>
+          <h1>Área de Administração</h1>
+          <p>Entre para gerir portfólios, clientes e categorias publicados no site.</p>
           <label>
             Email
             <input value={email} onChange={(event) => setEmail(event.target.value)} type="email" required />
@@ -347,7 +347,7 @@ export default function AdminPage() {
 
       <nav className="admin-tabs" aria-label="Modulos do admin">
         <button className={activeTab === "portfolio" ? "active" : ""} type="button" onClick={() => setActiveTab("portfolio")}>
-          Portfolios
+          Portfólios
         </button>
         <button className={activeTab === "clients" ? "active" : ""} type="button" onClick={() => setActiveTab("clients")}>
           Clientes
@@ -364,11 +364,11 @@ export default function AdminPage() {
           <section className="admin-grid">
             <form className="admin-panel admin-form" onSubmit={savePortfolio}>
               <div>
-                <span className="admin-kicker">{editingPortfolioSlug ? "Editar portfolio" : "Novo portfolio"}</span>
-                <h1>{editingPortfolioSlug ? "Atualizar portfolio" : "Adicionar portfolio"}</h1>
+                <span className="admin-kicker">{editingPortfolioSlug ? "Editar portfólio" : "Novo portfólio"}</span>
+                <h1>{editingPortfolioSlug ? "Atualizar portfólio" : "Adicionar portfólio"}</h1>
               </div>
               <label>
-                Titulo do portfolio
+                Título do portfólio
                 <input value={portfolioForm.title} onChange={(event) => updatePortfolioField("title", event.target.value)} required />
               </label>
               <label>
@@ -377,7 +377,7 @@ export default function AdminPage() {
                   list="portfolio-categories"
                   value={portfolioForm.type}
                   onChange={(event) => updatePortfolioField("type", event.target.value)}
-                  placeholder="Website, Assistencia Tecnica, Hosting..."
+                  placeholder="Website, Assistência Técnica, Hosting..."
                   required
                 />
                 <datalist id="portfolio-categories">
@@ -389,7 +389,7 @@ export default function AdminPage() {
                 <input value={portfolioForm.href} onChange={(event) => updatePortfolioField("href", event.target.value)} type="url" placeholder="https://..." />
               </label>
               <label>
-                Descricao
+                Descrição
                 <textarea value={portfolioForm.description} onChange={(event) => updatePortfolioField("description", event.target.value)} required />
               </label>
               <label>
@@ -401,31 +401,31 @@ export default function AdminPage() {
                 <input accept="image/*" onChange={(event) => setPortfolioLogoFile(event.target.files?.[0] || null)} required={!portfolioForm.logo && !portfolioLogoFile} type="file" />
               </label>
               <div className="admin-actions">
-                <button disabled={isSaving} type="submit">{isSaving ? "A guardar..." : editingPortfolioSlug ? "Guardar alteracoes" : "Adicionar portfolio"}</button>
+                <button disabled={isSaving} type="submit">{isSaving ? "A guardar..." : editingPortfolioSlug ? "Guardar alterações" : "Adicionar portfólio"}</button>
                 {editingPortfolioSlug ? <button className="admin-secondary" type="button" onClick={resetPortfolioForm}>Cancelar</button> : null}
               </div>
             </form>
 
             <aside className="admin-panel admin-preview">
-              <span className="admin-kicker">Pre-visualizacao</span>
+              <span className="admin-kicker">Pré-visualização</span>
               <article className="portfolio-card portfolio-work-card">
                 <div className="portfolio-template">
                   {currentPreview.images[0] ? <img src={currentPreview.images[0]} alt="" /> : null}
                   <div className="portfolio-image-caption">
                     <span>{portfolioForm.type || "Categoria"}</span>
-                    <strong>{portfolioForm.title || "Titulo do portfolio"}</strong>
+                    <strong>{portfolioForm.title || "Título do portfólio"}</strong>
                   </div>
                 </div>
                 <div className="portfolio-work-body">
                   <span className="portfolio-work-type">{portfolioForm.type || "Categoria"}</span>
                   <h3>{portfolioForm.title || "Nome do projeto"}</h3>
-                  <p>{portfolioForm.description || "A descricao preenchida aqui sera transformada num cartao igual aos cartoes do site."}</p>
+                  <p>{portfolioForm.description || "A descrição preenchida aqui será transformada num cartão igual aos cartões do site."}</p>
                 </div>
               </article>
             </aside>
           </section>
 
-          <ContentList title={`${projects.length} portfolios`} items={projects.map((project) => ({
+          <ContentList title={`${projects.length} portfólios`} items={projects.map((project) => ({
             key: project.slug,
             image: getProjectImages(project)[0],
             title: project.title,
@@ -458,7 +458,7 @@ export default function AdminPage() {
                 <input accept="image/*" onChange={(event) => setClientLogoFile(event.target.files?.[0] || null)} required={!clientForm.logo && !clientLogoFile} type="file" />
               </label>
               <div className="admin-actions">
-                <button disabled={isSaving} type="submit">{isSaving ? "A guardar..." : editingClientSlug ? "Guardar alteracoes" : "Adicionar cliente"}</button>
+                <button disabled={isSaving} type="submit">{isSaving ? "A guardar..." : editingClientSlug ? "Guardar alterações" : "Adicionar cliente"}</button>
                 {editingClientSlug ? <button className="admin-secondary" type="button" onClick={resetClientForm}>Cancelar</button> : null}
               </div>
             </form>
@@ -469,7 +469,7 @@ export default function AdminPage() {
             image: client.logo,
             title: client.name,
             meta: client.href || "Sem link",
-            description: "Cliente visivel na seccao Clientes do website.",
+            description: "Cliente visível na secção Clientes do website.",
             onEdit: () => editClient(client),
             onDelete: canDelete ? () => deleteItem(client.name, `/api/admin/clients/${client.slug}`, loadClients, () => editingClientSlug === client.slug && resetClientForm()) : undefined
           }))} />
@@ -489,11 +489,11 @@ export default function AdminPage() {
                 <input value={categoryForm.name} onChange={(event) => setCategoryForm((current) => ({ ...current, name: event.target.value }))} required />
               </label>
               <label>
-                Descricao
+                Descrição
                 <textarea value={categoryForm.description} onChange={(event) => setCategoryForm((current) => ({ ...current, description: event.target.value }))} />
               </label>
               <div className="admin-actions">
-                <button disabled={isSaving} type="submit">{isSaving ? "A guardar..." : editingCategorySlug ? "Guardar alteracoes" : "Adicionar categoria"}</button>
+                <button disabled={isSaving} type="submit">{isSaving ? "A guardar..." : editingCategorySlug ? "Guardar alterações" : "Adicionar categoria"}</button>
                 {editingCategorySlug ? <button className="admin-secondary" type="button" onClick={resetCategoryForm}>Cancelar</button> : null}
               </div>
             </form>
@@ -503,7 +503,7 @@ export default function AdminPage() {
             key: category.slug,
             title: category.name,
             meta: category.slug,
-            description: category.description || "Sem descricao.",
+            description: category.description || "Sem descrição.",
             onEdit: () => editCategory(category),
             onDelete: canDelete ? () => deleteItem(category.name, `/api/admin/categories/${category.slug}`, loadCategories, () => editingCategorySlug === category.slug && resetCategoryForm()) : undefined
           }))} />

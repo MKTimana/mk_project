@@ -1,17 +1,17 @@
 [
   {
     "name": "Website",
-    "description": "Websites institucionais, comerciais e paginas de apresentacao.",
+    "description": "Websites institucionais, comerciais e páginas de apresentação.",
     "slug": "website"
   },
   {
     "name": "Assistência Técnica",
-    "description": "Suporte tecnico, manutencao e acompanhamento operacional.",
+    "description": "Suporte técnico, manutenção e acompanhamento operacional.",
     "slug": "assistencia-tecnica"
   },
   {
     "name": "Hospedagem de E-mails",
-    "description": "Configuracao, hospedagem e suporte para emails corporativos.",
+    "description": "Configuração, hospedagem e suporte para emails corporativos.",
     "slug": "hospedagem-de-e-mails"
   }
 ]
