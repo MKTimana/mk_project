@@ -412,8 +412,8 @@ export default function AdminPage() {
                 <input value={portfolioForm.logo} onChange={(event) => updatePortfolioField("logo", event.target.value)} type="url" placeholder="https://..." />
               </label>
               <label>
-                Upload do logo
-                <input accept="image/*" onChange={(event) => setPortfolioLogoFile(event.target.files?.[0] || null)} required={!portfolioForm.logo && !portfolioLogoFile} type="file" />
+                Upload do logo (opcional)
+                <input accept="image/*" onChange={(event) => setPortfolioLogoFile(event.target.files?.[0] || null)} type="file" />
               </label>
               <div className="admin-actions">
                 <button disabled={isSaving} type="submit">{isSaving ? "A guardar..." : editingPortfolioSlug ? "Guardar alterações" : "Adicionar portfólio"}</button>
