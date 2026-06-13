@@ -397,7 +397,11 @@ export default function AdminPage() {
                 <input accept="image/*" multiple onChange={(event) => setImageFiles(Array.from(event.target.files || []))} required={!portfolioForm.images && !imageFiles.length} type="file" />
               </label>
               <label>
-                Logo relacionado
+                Link do logo relacionado opcional
+                <input value={portfolioForm.logo} onChange={(event) => updatePortfolioField("logo", event.target.value)} type="url" placeholder="https://..." />
+              </label>
+              <label>
+                Upload do logo relacionado
                 <input accept="image/*" onChange={(event) => setPortfolioLogoFile(event.target.files?.[0] || null)} required={!portfolioForm.logo && !portfolioLogoFile} type="file" />
               </label>
               <div className="admin-actions">
@@ -454,7 +458,11 @@ export default function AdminPage() {
                 <input value={clientForm.href} onChange={(event) => setClientForm((current) => ({ ...current, href: event.target.value }))} type="url" placeholder="https://..." />
               </label>
               <label>
-                Logo do cliente
+                Link do logo do cliente opcional
+                <input value={clientForm.logo} onChange={(event) => setClientForm((current) => ({ ...current, logo: event.target.value }))} type="url" placeholder="https://..." />
+              </label>
+              <label>
+                Upload do logo do cliente
                 <input accept="image/*" onChange={(event) => setClientLogoFile(event.target.files?.[0] || null)} required={!clientForm.logo && !clientLogoFile} type="file" />
               </label>
               <div className="admin-actions">
