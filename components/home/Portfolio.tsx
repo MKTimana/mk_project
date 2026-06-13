@@ -25,63 +25,84 @@ async function buildShareImage(project: PortfolioProject, accessUrl: string) {
     return null;
   }
 
-  try {
-    const photo = await loadCanvasImage(getProjectImages(project)[0]);
-    const ratio = Math.max(canvas.width / photo.width, canvas.height / photo.height);
-    const width = photo.width * ratio;
-    const height = photo.height * ratio;
-    ctx.drawImage(photo, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
-  } catch {
-    const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
-    gradient.addColorStop(0, "#0f5f9d");
-    gradient.addColorStop(0.55, "#168bd7");
-    gradient.addColorStop(1, "#172033");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 1200, 630);
-  }
-
-  const overlay = ctx.createLinearGradient(0, 0, 1200, 0);
-  overlay.addColorStop(0, "rgba(15, 95, 157, 0.76)");
-  overlay.addColorStop(0.62, "rgba(23, 32, 51, 0.34)");
-  overlay.addColorStop(1, "rgba(23, 32, 51, 0.08)");
-  ctx.fillStyle = overlay;
+  const background = ctx.createLinearGradient(0, 0, 1200, 630);
+  background.addColorStop(0, "#f5f8fb");
+  background.addColorStop(0.54, "#ffffff");
+  background.addColorStop(1, "#e9f6ff");
+  ctx.fillStyle = background;
   ctx.fillRect(0, 0, 1200, 630);
 
-  ctx.fillStyle = "rgba(255, 255, 255, 0.94)";
-  ctx.roundRect(72, 82, 650, 466, 32);
-  ctx.fill();
-
-  ctx.fillStyle = "#e9f6ff";
-  ctx.roundRect(112, 122, 198, 42, 21);
-  ctx.fill();
-
   ctx.fillStyle = "#0f5f9d";
-  ctx.font = "800 20px Arial";
-  ctx.fillText("Portfólio MKTECH", 132, 150);
+  ctx.fillRect(0, 0, 18, 630);
 
-  ctx.fillStyle = "#172033";
-  ctx.font = "800 48px Arial";
-  wrapCanvasText(ctx, project.title, 112, 230, 560, 58, 2);
-
-  ctx.fillStyle = "#168bd7";
-  ctx.font = "800 25px Arial";
-  ctx.fillText(project.type, 112, 332, 560);
-
-  ctx.fillStyle = "#657084";
-  ctx.font = "400 27px Arial";
-  wrapCanvasText(ctx, project.description, 112, 390, 548, 38, 3);
+  ctx.fillStyle = "#ffffff";
+  ctx.shadowColor = "rgba(23, 32, 51, 0.14)";
+  ctx.shadowBlur = 28;
+  ctx.shadowOffsetY = 12;
+  ctx.roundRect(58, 48, 1084, 534, 28);
+  ctx.fill();
+  ctx.shadowColor = "transparent";
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetY = 0;
 
   ctx.fillStyle = "#e9f6ff";
-  ctx.roundRect(112, 480, 170, 42, 21);
+  ctx.roundRect(96, 86, 192, 38, 19);
   ctx.fill();
 
   ctx.fillStyle = "#0f5f9d";
   ctx.font = "800 18px Arial";
-  ctx.fillText("Aceder", 138, 507);
+  ctx.fillText("Portfólio MKTECH", 116, 111);
 
   ctx.fillStyle = "#172033";
-  ctx.font = "700 20px Arial";
-  wrapCanvasText(ctx, accessUrl, 306, 504, 360, 28, 2);
+  ctx.font = "800 44px Arial";
+  wrapCanvasText(ctx, project.title, 96, 184, 510, 54, 2);
+
+  ctx.fillStyle = "#168bd7";
+  ctx.font = "800 23px Arial";
+  ctx.fillText(project.type, 96, 300, 510);
+
+  ctx.fillStyle = "#657084";
+  ctx.font = "400 24px Arial";
+  wrapCanvasText(ctx, project.description, 96, 350, 510, 34, 3);
+
+  drawServiceChips(ctx, getProjectServices(project), 96, 466, 510);
+
+  ctx.fillStyle = "#0f5f9d";
+  ctx.roundRect(96, 522, 132, 38, 19);
+  ctx.fill();
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "800 17px Arial";
+  ctx.fillText("Aceder", 132, 547);
+
+  ctx.fillStyle = "#172033";
+  ctx.font = "700 18px Arial";
+  wrapCanvasText(ctx, accessUrl, 246, 545, 368, 24, 2);
+
+  ctx.fillStyle = "#f5f8fb";
+  ctx.roundRect(656, 86, 430, 396, 24);
+  ctx.fill();
+
+  try {
+    const photo = await loadCanvasImage(getProjectImages(project)[0]);
+    drawCoverImage(ctx, photo, 656, 86, 430, 396, 24);
+  } catch {
+    const gradient = ctx.createLinearGradient(656, 86, 1086, 482);
+    gradient.addColorStop(0, "#0f5f9d");
+    gradient.addColorStop(0.7, "#168bd7");
+    gradient.addColorStop(1, "#172033");
+    ctx.fillStyle = gradient;
+    ctx.roundRect(656, 86, 430, 396, 24);
+    ctx.fill();
+  }
+
+  ctx.fillStyle = "#657084";
+  ctx.font = "700 18px Arial";
+  ctx.fillText("Imagem do trabalho", 682, 526);
+
+  ctx.fillStyle = "#172033";
+  ctx.font = "800 26px Arial";
+  wrapCanvasText(ctx, project.title, 682, 558, 386, 30, 1);
 
   return new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
 }
@@ -92,6 +113,49 @@ function getProjectImages(project: PortfolioProject) {
 
 function getProjectServices(project: PortfolioProject) {
   return project.services?.length ? project.services : [project.type].filter(Boolean);
+}
+
+function drawCoverImage(
+  ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number
+) {
+  const ratio = Math.max(width / image.width, height / image.height);
+  const imageWidth = image.width * ratio;
+  const imageHeight = image.height * ratio;
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.roundRect(x, y, width, height, radius);
+  ctx.clip();
+  ctx.drawImage(image, x + (width - imageWidth) / 2, y + (height - imageHeight) / 2, imageWidth, imageHeight);
+  ctx.restore();
+}
+
+function drawServiceChips(ctx: CanvasRenderingContext2D, services: string[], x: number, y: number, maxWidth: number) {
+  let currentX = x;
+  let currentY = y;
+
+  services.slice(0, 4).forEach((service) => {
+    ctx.font = "800 15px Arial";
+    const chipWidth = Math.min(ctx.measureText(service).width + 28, maxWidth);
+
+    if (currentX + chipWidth > x + maxWidth) {
+      currentX = x;
+      currentY += 36;
+    }
+
+    ctx.fillStyle = "#eef7fd";
+    ctx.roundRect(currentX, currentY, chipWidth, 28, 14);
+    ctx.fill();
+    ctx.fillStyle = "#0f5f9d";
+    ctx.fillText(service, currentX + 14, currentY + 19, chipWidth - 28);
+    currentX += chipWidth + 8;
+  });
 }
 
 function wrapCanvasText(
@@ -197,21 +261,21 @@ export function Portfolio() {
             <div className="col-xl-4 col-md-6 portfolio-item" key={project.slug}>
               <article id={`portfolio-${project.slug}`} className="portfolio-card portfolio-work-card">
                 {project.href ? (
-                <a className="portfolio-work-link" href={project.href} target="_blank" rel="noreferrer">
-                  <div className={`portfolio-template portfolio-template-${(index % 3) + 1}`}>
-                    <img src={getProjectImages(project)[0]} className="img-fluid" alt="" />
-                    {getProjectImages(project).length > 1 ? (
-                      <span className="portfolio-gallery-count">
-                        <i className="bi bi-images" />
-                        {getProjectImages(project).length}
-                      </span>
-                    ) : null}
-                    <div className="portfolio-image-caption">
-                      <span>{project.type}</span>
-                      <strong>{project.title}</strong>
+                  <a className="portfolio-work-link" href={project.href} target="_blank" rel="noreferrer">
+                    <div className={`portfolio-template portfolio-template-${(index % 3) + 1}`}>
+                      <img src={getProjectImages(project)[0]} className="img-fluid" alt="" />
+                      {getProjectImages(project).length > 1 ? (
+                        <span className="portfolio-gallery-count">
+                          <i className="bi bi-images" />
+                          {getProjectImages(project).length}
+                        </span>
+                      ) : null}
+                      <div className="portfolio-image-caption">
+                        <span>{project.type}</span>
+                        <strong>{project.title}</strong>
+                      </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
                 ) : (
                   <div className="portfolio-work-link">
                     <div className={`portfolio-template portfolio-template-${(index % 3) + 1}`}>
@@ -234,9 +298,9 @@ export function Portfolio() {
                   <span className="portfolio-work-type">{project.type}</span>
                   {project.href ? (
                     <h3>
-                    <a href={project.href} target="_blank" rel="noreferrer">
-                      {project.title}
-                    </a>
+                      <a href={project.href} target="_blank" rel="noreferrer">
+                        {project.title}
+                      </a>
                     </h3>
                   ) : (
                     <h3>{project.title}</h3>
@@ -254,7 +318,9 @@ export function Portfolio() {
                   )}
                   <div className="portfolio-service-list">
                     {getProjectServices(project).slice(0, 4).map((service) => (
-                      <span className="portfolio-service-chip" key={service}>{service}</span>
+                      <span className="portfolio-service-chip" key={service}>
+                        {service}
+                      </span>
                     ))}
                     {getProjectServices(project).length > 4 ? (
                       <span className="portfolio-service-chip">+{getProjectServices(project).length - 4}</span>
@@ -264,9 +330,9 @@ export function Portfolio() {
 
                 <div className="portfolio-work-actions">
                   {project.href ? (
-                  <a href={project.href} target="_blank" rel="noreferrer" className="portfolio-visit-link">
-                    Ver trabalho
-                  </a>
+                    <a href={project.href} target="_blank" rel="noreferrer" className="portfolio-visit-link">
+                      Ver trabalho
+                    </a>
                   ) : null}
                   <button type="button" className="portfolio-share-button" onClick={() => shareProject(project)}>
                     <i className="bi bi-share" />
