@@ -11,6 +11,7 @@ export type PortfolioProject = {
   title: string;
   description: string;
   type: string;
+  services?: string[];
   href?: string;
   slug: string;
 };
@@ -81,6 +82,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       "Suporte técnico contínuo, manutenção de Equipementos e acompanhamento da infraestrutura digital da empresa.",
     type: "Assistência Técnica",
+    services: ["Assistência Técnica"],
     href: "https://unibrokers.co.mz",
     slug: "unibrokers"
   },
@@ -91,6 +93,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       "Assistência técnica e suporte operacional para manter os serviços internos mais estáveis e organizados.",
     type: "Assistência Técnica",
+    services: ["Website", "Assistência Técnica", "Emails Corporativos"],
     href: "https://www.pcd.co.mz/",
     slug: "portos-de-cabo-delgado"
   },
@@ -101,6 +104,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       "Website institucional responsivo para apresentar serviços, reforçar a credibilidade e facilitar o contacto com clientes.",
     type: "Website",
+    services: ["Website"],
     href: "https://www.3rmozambique.com/",
     slug: "3r-mozambique"
   },
@@ -111,6 +115,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       "Configuração e hospedagem de emails corporativos para comunicação profissional e maior confiança da marca.",
     type: "Hospedagem de E-mails",
+    services: ["Emails Corporativos", "Hospedagem"],
     href: "https://haps.co.mz",
     slug: "haps-solucoes"
   },
@@ -121,6 +126,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       "Website de apresentação com estrutura clara para destacar áreas de actuação, contactos e posicionamento comercial.",
     type: "Website",
+    services: ["Website"],
     href: "https://sas.co.mz",
     slug: "surveyors-associate-servicos"
   },
@@ -131,6 +137,7 @@ export const portfolioProjects: PortfolioProject[] = [
     description:
       "Website corporativo com foco em presença online, acesso rápido a informação e comunicação direta com potenciais clientes.",
     type: "Website",
+    services: ["Website"],
     href: "https://venssco.co.mz",
     slug: "venssco"
   }

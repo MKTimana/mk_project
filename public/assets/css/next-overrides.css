@@ -876,6 +876,24 @@ main > section {
   white-space: nowrap;
 }
 
+.portfolio-service-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.portfolio-service-chip {
+  background: #eef7fd;
+  border: 1px solid rgba(22, 139, 215, 0.18);
+  border-radius: 999px;
+  color: var(--mk-blue-dark);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 8px 10px;
+}
+
 .portfolio-gallery-modal {
   align-items: center;
   display: flex;

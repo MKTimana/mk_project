@@ -29,6 +29,7 @@ export async function PUT(request: Request, context: RouteContext) {
       title: String(formData.get("title") || ""),
       description: String(formData.get("description") || ""),
       type: String(formData.get("type") || ""),
+      services: parseImageList(String(formData.get("services") || "")),
       href: String(formData.get("href") || "")
     });
 

@@ -51,6 +51,9 @@ function normalizeProject(project: PortfolioProject): PortfolioProject {
     .map((image) => image.trim())
     .filter(Boolean);
   const primaryImage = images[0] || project.image?.trim() || "";
+  const services = (project.services?.length ? project.services : [project.type])
+    .map((service) => service.trim())
+    .filter(Boolean);
 
   return {
     image: primaryImage,
@@ -59,6 +62,7 @@ function normalizeProject(project: PortfolioProject): PortfolioProject {
     title: project.title.trim(),
     description: project.description.trim(),
     type: project.type.trim(),
+    services,
     href: project.href?.trim() || "",
     slug: project.slug.trim()
   };

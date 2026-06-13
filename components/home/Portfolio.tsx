@@ -90,6 +90,10 @@ function getProjectImages(project: PortfolioProject) {
   return project.images?.length ? project.images : [project.image].filter(Boolean);
 }
 
+function getProjectServices(project: PortfolioProject) {
+  return project.services?.length ? project.services : [project.type].filter(Boolean);
+}
+
 function wrapCanvasText(
   ctx: CanvasRenderingContext2D,
   text: string,
@@ -248,6 +252,14 @@ export function Portfolio() {
                   ) : (
                     <p>{project.description}</p>
                   )}
+                  <div className="portfolio-service-list">
+                    {getProjectServices(project).slice(0, 4).map((service) => (
+                      <span className="portfolio-service-chip" key={service}>{service}</span>
+                    ))}
+                    {getProjectServices(project).length > 4 ? (
+                      <span className="portfolio-service-chip">+{getProjectServices(project).length - 4}</span>
+                    ) : null}
+                  </div>
                 </div>
 
                 <div className="portfolio-work-actions">

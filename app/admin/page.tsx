@@ -16,6 +16,7 @@ type PortfolioForm = {
   title: string;
   description: string;
   type: string;
+  services: string;
   href: string;
 };
 
@@ -30,7 +31,7 @@ type CategoryForm = {
   description: string;
 };
 
-const emptyPortfolioForm: PortfolioForm = { images: "", logo: "", title: "", description: "", type: "", href: "" };
+const emptyPortfolioForm: PortfolioForm = { images: "", logo: "", title: "", description: "", type: "", services: "", href: "" };
 const emptyClientForm: ClientForm = { name: "", logo: "", href: "" };
 const emptyCategoryForm: CategoryForm = { name: "", description: "" };
 
@@ -231,6 +232,7 @@ export default function AdminPage() {
       title: project.title,
       description: project.description,
       type: project.type,
+      services: (project.services?.length ? project.services : [project.type]).join("\n"),
       href: project.href || ""
     });
     setImageFiles([]);
@@ -389,6 +391,15 @@ export default function AdminPage() {
                 <input value={portfolioForm.href} onChange={(event) => updatePortfolioField("href", event.target.value)} type="url" placeholder="https://..." />
               </label>
               <label>
+                Serviços associados
+                <textarea
+                  value={portfolioForm.services}
+                  onChange={(event) => updatePortfolioField("services", event.target.value)}
+                  placeholder="Website&#10;Assistência Técnica&#10;Emails Corporativos"
+                  required
+                />
+              </label>
+              <label>
                 Descrição
                 <textarea value={portfolioForm.description} onChange={(event) => updatePortfolioField("description", event.target.value)} required />
               </label>
@@ -424,6 +435,11 @@ export default function AdminPage() {
                   <span className="portfolio-work-type">{portfolioForm.type || "Categoria"}</span>
                   <h3>{portfolioForm.title || "Nome do projeto"}</h3>
                   <p>{portfolioForm.description || "A descrição preenchida aqui será transformada num cartão igual aos cartões do site."}</p>
+                  <div className="portfolio-service-list">
+                    {parseImageList(portfolioForm.services).map((service) => (
+                      <span className="portfolio-service-chip" key={service}>{service}</span>
+                    ))}
+                  </div>
                 </div>
               </article>
             </aside>
@@ -433,7 +449,7 @@ export default function AdminPage() {
             key: project.slug,
             image: getProjectImages(project)[0],
             title: project.title,
-            meta: project.type,
+            meta: (project.services?.length ? project.services : [project.type]).join(" • "),
             description: project.description,
             onEdit: () => editProject(project),
             onDelete: canDelete ? () => deleteItem(project.title, `/api/admin/portfolio/${project.slug}`, loadProjects, () => editingPortfolioSlug === project.slug && resetPortfolioForm()) : undefined
