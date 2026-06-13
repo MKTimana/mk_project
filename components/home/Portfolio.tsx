@@ -262,9 +262,9 @@ export function Portfolio() {
       `${project.title} | MKTECH`,
       project.description,
       "",
-      `Serviços: ${getProjectServices(project).join(", ")}`,
-      `Link de acesso: ${accessUrl}`
+      `Serviços: ${getProjectServices(project).join(", ")}`
     ].join("\n");
+    const fallbackShareText = `${shareText}\n${accessUrl}`;
     const shareData = {
       title: `${project.title} | MKTECH`,
       text: shareText,
@@ -291,9 +291,9 @@ export function Portfolio() {
         return;
       }
 
-      await navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(fallbackShareText);
     } catch {
-      await navigator.clipboard.writeText(shareText);
+      await navigator.clipboard.writeText(fallbackShareText);
     }
   }
 
