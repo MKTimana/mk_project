@@ -16,34 +16,6 @@ const aboutValues = [
   }
 ];
 
-const companyValues = [
-  {
-    icon: "bi bi-rocket-takeoff",
-    title: "Inovação",
-    text: "Estamos sempre um passo à frente"
-  },
-  {
-    icon: "bi bi-check2-square",
-    title: "Qualidade",
-    text: "Entregamos com rigor e excelência"
-  },
-  {
-    icon: "bi bi-handshake",
-    title: "Confiança",
-    text: "Relações honestas e duradouras"
-  },
-  {
-    icon: "bi bi-flag",
-    title: "Identidade Nacional",
-    text: "100% moçambicanos, orgulhosamente"
-  },
-  {
-    icon: "bi bi-lightning-charge",
-    title: "Dinamismo",
-    text: "Equipa jovem, ágil e proactiva"
-  }
-];
-
 export function About() {
   return (
     <section id="about" className="about">
@@ -71,21 +43,6 @@ export function About() {
                 </div>
               </article>
             ))}
-          </div>
-
-          <div className="company-values">
-            <span className="section-kicker">Valores</span>
-            <div className="company-values-list">
-              {companyValues.map((value) => (
-                <article className="company-value" key={value.title}>
-                  <div className="company-value-title">
-                    <i className={value.icon} />
-                    <h3>{value.title}</h3>
-                  </div>
-                  <p>{value.text}</p>
-                </article>
-              ))}
-            </div>
           </div>
         </div>
       </div>
