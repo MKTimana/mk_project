@@ -2,12 +2,12 @@ const aboutValues = [
   {
     icon: "bi bi-eye",
     title: "Visão",
-    text: "Ser uma referência moçambicana em soluções tecnológicas que aproximam empresas de processos mais simples, seguros e eficientes."
+    text: "Tornar-se a empresa de tecnologias de informação de referência em Moçambique e, progressivamente, na África Austral, liderando a transformação digital com soluções nacionais de excelência."
   },
   {
     icon: "bi bi-bullseye",
     title: "Missão",
-    text: "Criar websites, sistemas, infraestrutura e suporte técnico que resolvem necessidades reais e ajudam os clientes a crescer com confiança."
+    text: "Oferecer soluções tecnológicas inovadoras e acessíveis, desde desenvolvimento web e mobile até infraestrutura de redes e suporte técnico que respondam às necessidades reais do mercado moçambicano, com qualidade, profissionalismo e um atendimento próximo ao cliente."
   },
   {
     icon: "bi bi-flag",
