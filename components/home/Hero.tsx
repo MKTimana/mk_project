@@ -54,17 +54,12 @@ export function Hero() {
               Moçambique.
             </h2>
             <div className="hero-actions d-flex justify-content-center justify-content-lg-start">
-              <a
-                href="https://wa.me/258869736169?text=Ol%C3%A1!%20Quero%20solicitar%20um%20or%C3%A7amento."
-                target="_blank"
-                rel="noreferrer"
-                className="btn-get-started scrollto"
-              >
-                Solicitar orçamento
+              <a href="#about" className="btn-get-started scrollto">
+                Quem somos
               </a>
-              <a href="#cliens" className="btn-watch-video">
+              <a href="#contact" className="btn-watch-video">
                 <i className="bi bi-arrow-up-right-circle" />
-                <span>Ver clientes</span>
+                <span>Fale connosco</span>
               </a>
             </div>
           </div>

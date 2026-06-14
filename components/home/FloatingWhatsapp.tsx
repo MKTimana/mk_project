@@ -7,8 +7,8 @@ export function FloatingWhatsapp() {
       rel="noreferrer"
       aria-label="Abrir conversa com a MKTECH"
     >
-      <i className="bi bi-chat-dots-fill" />
-      <span>Chat</span>
+      <i className="bi bi-whatsapp" />
+      <span>WhatsApp</span>
     </a>
   );
 }
