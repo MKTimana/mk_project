@@ -41,36 +41,39 @@ export type TeamMember = {
 export const services: Service[] = [
   {
     icon: "bi bi-globe2",
-    title: "Construção de Websites",
+    title: "Criação de Websites",
     description:
-      "Websites institucionais, comerciais e landing pages com design responsivo, performance e presença profissional."
+      "Desenvolvemos websites modernos, responsivos e optimizados para apresentar a sua marca, atrair clientes e fortalecer a sua presença digital."
   },
   {
     icon: "bi bi-code-slash",
     title: "Sistemas & Aplicações",
     description:
-      "Aplicações web e mobile para automatizar processos, gerir operações e melhorar a experiência dos utilizadores."
+      "Criamos sistemas web e aplicações à medida para automatizar processos, organizar operações e melhorar a experiência dos utilizadores."
   },
   {
     icon: "bi bi-cloud-check",
-    title: "Hospedagem e Domínio",
-    description: "Registo de domínios, alojamento web, VPS e soluções cloud seguras para empresas em crescimento."
+    title: "Hospedagem, Domínio e Emails",
+    description:
+      "Disponibilizamos registo de domínios, alojamento web, emails corporativos, VPS e soluções cloud seguras para garantir uma presença online estável e profissional."
   },
   {
     icon: "bi bi-diagram-3",
     title: "Redes de Computadores",
     description:
-      "Planeamento, instalação e administração de redes cabeadas e wireless para escritórios e organizações."
+      "Planeamos, instalamos e administramos redes cabeadas e wireless para empresas, escritórios e instituições que precisam de conectividade estável e segura."
   },
   {
-    icon: "bi bi-at",
-    title: "Emails Corporativos",
-    description: "Criação e configuração de emails profissionais para reforçar a credibilidade da sua marca."
+    icon: "bi bi-shield-check",
+    title: "Segurança e Backup",
+    description:
+      "Implementamos soluções de backup, protecção de dados e boas práticas de segurança para reduzir riscos e proteger a informação da sua empresa."
   },
   {
     icon: "bi bi-tools",
     title: "Assistência Técnica",
-    description: "Consultoria de TI, helpdesk, troubleshooting e manutenção preventiva ou correctiva."
+    description:
+      "Prestamos suporte técnico, manutenção preventiva, consultoria de TI e resolução de problemas para manter a sua operação funcional e segura."
   }
 ];
 
