@@ -446,6 +446,10 @@ section {
   animation-delay: -12s;
 }
 
+.hero-tech-chip-orbit-four {
+  animation-delay: -15s;
+}
+
 .hero-tech-chip {
   align-items: center;
   animation: hero-chip-counter-orbit 18s linear infinite;
@@ -477,6 +481,10 @@ section {
 
 .hero-tech-chip-orbit-three .hero-tech-chip {
   animation-delay: -12s;
+}
+
+.hero-tech-chip-orbit-four .hero-tech-chip {
+  animation-delay: -15s;
 }
 
 @keyframes hero-tech-spin {

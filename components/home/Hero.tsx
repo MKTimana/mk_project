@@ -18,8 +18,8 @@ function HeroTechVisual() {
 
       <div className="hero-tech-chip-orbit hero-tech-chip-orbit-one">
         <div className="hero-tech-chip">
-          <i className="bi bi-globe2" />
-          Websites
+          <i className="bi bi-code-slash" />
+          Desenvolvimento
         </div>
       </div>
       <div className="hero-tech-chip-orbit hero-tech-chip-orbit-two">
@@ -32,6 +32,12 @@ function HeroTechVisual() {
         <div className="hero-tech-chip">
           <i className="bi bi-diagram-3" />
           Redes
+        </div>
+      </div>
+      <div className="hero-tech-chip-orbit hero-tech-chip-orbit-four">
+        <div className="hero-tech-chip">
+          <i className="bi bi-pc-display" />
+          Material Informático
         </div>
       </div>
     </div>
@@ -55,7 +61,7 @@ export function Hero() {
             </h2>
             <div className="hero-actions d-flex justify-content-center justify-content-lg-start">
               <a href="#about" className="btn-get-started scrollto">
-                Quem somos
+                Quem somos?
               </a>
               <a href="#contact" className="btn-watch-video">
                 <i className="bi bi-arrow-up-right-circle" />
