@@ -773,6 +773,31 @@ main > section {
   z-index: 2;
 }
 
+.portfolio-client-logo {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 8px;
+  box-shadow: 0 10px 26px rgba(23, 32, 51, 0.18);
+  display: inline-flex;
+  height: 54px;
+  justify-content: center;
+  left: 14px;
+  padding: 8px;
+  position: absolute;
+  top: 14px;
+  width: 92px;
+  z-index: 3;
+}
+
+.portfolio-template .portfolio-client-logo img {
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  transform: none;
+  transition: none;
+  width: 100%;
+}
+
 .portfolio-template::after {
   background:
     linear-gradient(180deg, rgba(23, 32, 51, 0) 28%, rgba(23, 32, 51, 0.78) 100%),

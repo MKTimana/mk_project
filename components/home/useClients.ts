@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { ClientLogo } from "@/data/site";
+import type { ClientLogo, PortfolioProject } from "@/data/site";
 
 const fallbackClients: ClientLogo[] = [
   { name: "UNIBROKERS Correctores de Seguros Lda", logo: "/assets/img/clients/Unib.png", href: "https://unibrokers.co.mz", slug: "unibrokers" },
@@ -18,11 +18,13 @@ export function useClients() {
   useEffect(() => {
     let isMounted = true;
 
-    fetch("/api/clients")
-      .then((response) => (response.ok ? response.json() : fallbackClients))
-      .then((data: ClientLogo[]) => {
+    Promise.all([
+      fetch("/api/clients").then((response) => (response.ok ? response.json() : fallbackClients)),
+      fetch("/api/portfolio").then((response) => (response.ok ? response.json() : []))
+    ])
+      .then(([clientData, portfolioData]: [ClientLogo[], PortfolioProject[]]) => {
         if (isMounted) {
-          setClients(data);
+          setClients(mergePortfolioClients(clientData, portfolioData));
         }
       })
       .catch(() => {
@@ -37,4 +39,28 @@ export function useClients() {
   }, []);
 
   return clients;
+}
+
+function mergePortfolioClients(clients: ClientLogo[], projects: PortfolioProject[]) {
+  const used = new Set(clients.map((client) => client.slug || client.name.toLowerCase()));
+  const portfolioClients = projects
+    .filter((project) => project.logo?.trim())
+    .map((project) => ({
+      name: project.title,
+      logo: project.logo,
+      href: project.href || "",
+      slug: project.slug
+    }))
+    .filter((client) => {
+      const key = client.slug || client.name.toLowerCase();
+
+      if (used.has(key)) {
+        return false;
+      }
+
+      used.add(key);
+      return true;
+    });
+
+  return [...clients, ...portfolioClients];
 }

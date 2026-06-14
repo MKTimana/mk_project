@@ -99,6 +99,10 @@ function getProjectServices(project: PortfolioProject) {
   return project.services?.length ? project.services : [project.type].filter(Boolean);
 }
 
+function hasProjectLogo(project: PortfolioProject) {
+  return Boolean(project.logo?.trim());
+}
+
 function fillRoundRect(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -317,6 +321,11 @@ export function Portfolio() {
                   <a className="portfolio-work-link" href={project.href} target="_blank" rel="noreferrer">
                     <div className={`portfolio-template portfolio-template-${(index % 3) + 1}`}>
                       <img src={getProjectImages(project)[0]} className="img-fluid" alt="" />
+                      {hasProjectLogo(project) ? (
+                        <span className="portfolio-client-logo">
+                          <img src={project.logo} alt={`${project.title} logo`} />
+                        </span>
+                      ) : null}
                       {getProjectImages(project).length > 1 ? (
                         <span className="portfolio-gallery-count">
                           <i className="bi bi-images" />
@@ -333,6 +342,11 @@ export function Portfolio() {
                   <div className="portfolio-work-link">
                     <div className={`portfolio-template portfolio-template-${(index % 3) + 1}`}>
                       <img src={getProjectImages(project)[0]} className="img-fluid" alt="" />
+                      {hasProjectLogo(project) ? (
+                        <span className="portfolio-client-logo">
+                          <img src={project.logo} alt={`${project.title} logo`} />
+                        </span>
+                      ) : null}
                       {getProjectImages(project).length > 1 ? (
                         <span className="portfolio-gallery-count">
                           <i className="bi bi-images" />
