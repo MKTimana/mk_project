@@ -41,39 +41,36 @@ export type TeamMember = {
 export const services: Service[] = [
   {
     icon: "bi bi-globe2",
-    title: "Criação de Websites",
+    title: "Construção de Websites",
     description:
-      "Desenvolvemos websites modernos, responsivos e optimizados para apresentar a sua marca, atrair clientes e fortalecer a sua presença digital."
+      "Websites institucionais, comerciais e landing pages com design responsivo, performance e presença profissional."
   },
   {
     icon: "bi bi-code-slash",
     title: "Sistemas & Aplicações",
     description:
-      "Criamos sistemas web e aplicações à medida para automatizar processos, organizar operações e melhorar a experiência dos utilizadores."
+      "Aplicações web e mobile para automatizar processos, gerir operações e melhorar a experiência dos utilizadores."
   },
   {
     icon: "bi bi-cloud-check",
-    title: "Hospedagem, Domínio e Emails",
-    description:
-      "Disponibilizamos registo de domínios, alojamento web, emails corporativos, VPS e soluções cloud seguras para garantir uma presença online estável e profissional."
+    title: "Hospedagem e Domínio",
+    description: "Registo de domínios, alojamento web, VPS e soluções cloud seguras para empresas em crescimento."
   },
   {
     icon: "bi bi-diagram-3",
     title: "Redes de Computadores",
     description:
-      "Planeamos, instalamos e administramos redes cabeadas e wireless para empresas, escritórios e instituições que precisam de conectividade estável e segura."
+      "Planeamento, instalação e administração de redes cabeadas e wireless para escritórios e organizações."
   },
   {
-    icon: "bi bi-shield-check",
-    title: "Segurança e Backup",
-    description:
-      "Implementamos soluções de backup, protecção de dados e boas práticas de segurança para reduzir riscos e proteger a informação da sua empresa."
+    icon: "bi bi-at",
+    title: "Emails Corporativos",
+    description: "Criação e configuração de emails profissionais para reforçar a credibilidade da sua marca."
   },
   {
     icon: "bi bi-tools",
     title: "Assistência Técnica",
-    description:
-      "Prestamos suporte técnico, manutenção preventiva, consultoria de TI e resolução de problemas para manter a sua operação funcional e segura."
+    description: "Consultoria de TI, helpdesk, troubleshooting e manutenção preventiva ou correctiva."
   }
 ];
 
@@ -88,6 +85,17 @@ export const portfolioProjects: PortfolioProject[] = [
     services: ["Assistência Técnica"],
     href: "https://unibrokers.co.mz",
     slug: "unibrokers"
+  },
+  {
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+    logo: "/assets/img/clients/Unib.png",
+    title: "Meehgo Architecs, lda",
+    description:
+      "Website",
+    type: "Website",
+    services: ["Website"],
+    href: "#",
+    slug: "meehgo"
   },
   {
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
@@ -156,7 +164,7 @@ export const team: TeamMember[] = [
   },
   {
     name: "Janairy Timane",
-    role: "Secretária Administrativa || Administrative Secretary",
+    role: "Secretária Administrativa",
     image: "/assets/img/team/Janairy.png",
     linkedin:"https://www.linkedin.com/company/mktechmz/",
     photoPosition: "center 45%"
