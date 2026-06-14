@@ -1,18 +1,18 @@
 const aboutValues = [
   {
+    icon: "bi bi-eye",
+    title: "Visão",
+    text: "Ser uma referência moçambicana em soluções tecnológicas que aproximam empresas de processos mais simples, seguros e eficientes."
+  },
+  {
     icon: "bi bi-bullseye",
-    title: "Foco no objectivo",
-    text: "Entendemos a necessidade antes de propor a tecnologia."
+    title: "Missão",
+    text: "Criar websites, sistemas, infraestrutura e suporte técnico que resolvem necessidades reais e ajudam os clientes a crescer com confiança."
   },
   {
-    icon: "bi bi-shield-check",
-    title: "Soluções seguras",
-    text: "Criamos estruturas estáveis para operação e crescimento."
-  },
-  {
-    icon: "bi bi-people",
-    title: "Parceria próxima",
-    text: "Acompanhamos o cliente com comunicação clara e prática."
+    icon: "bi bi-flag",
+    title: "Objectivo",
+    text: "Entregar tecnologia prática, estável e bem acompanhada, mantendo uma relação próxima com cada cliente antes, durante e depois de cada projeto."
   }
 ];
 
