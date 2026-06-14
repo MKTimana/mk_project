@@ -432,9 +432,9 @@ section {
 
 .hero-tech-chip-orbit {
   animation: hero-chip-orbit 18s linear infinite;
-  height: 330px;
+  height: 390px;
   position: absolute;
-  width: 330px;
+  width: 390px;
   z-index: 4;
 }
 
@@ -2235,8 +2235,8 @@ main > section {
   }
 
   .hero-tech-chip-orbit {
-    height: 238px;
-    width: 238px;
+    height: 285px;
+    width: 285px;
   }
 
   .hero-tech-chip {
