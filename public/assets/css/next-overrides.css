@@ -439,15 +439,15 @@ section {
 }
 
 .hero-tech-chip-orbit-two {
-  animation-delay: -6s;
+  animation-delay: -4.5s;
 }
 
 .hero-tech-chip-orbit-three {
-  animation-delay: -12s;
+  animation-delay: -9s;
 }
 
 .hero-tech-chip-orbit-four {
-  animation-delay: -15s;
+  animation-delay: -13.5s;
 }
 
 .hero-tech-chip {
@@ -476,15 +476,15 @@ section {
 }
 
 .hero-tech-chip-orbit-two .hero-tech-chip {
-  animation-delay: -6s;
+  animation-delay: -4.5s;
 }
 
 .hero-tech-chip-orbit-three .hero-tech-chip {
-  animation-delay: -12s;
+  animation-delay: -9s;
 }
 
 .hero-tech-chip-orbit-four .hero-tech-chip {
-  animation-delay: -15s;
+  animation-delay: -13.5s;
 }
 
 @keyframes hero-tech-spin {
