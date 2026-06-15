@@ -1,0 +1,12 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+}
+
+/* The original Bootstrap template preloader can miss window.load inside Next.js. */
+#preloader {
+  display: none !important;
+}
